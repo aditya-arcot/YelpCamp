@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+
+<h1>All Campgrounds</h1>
+
+<a href="<%= baseUrl %>/new">Add Campground</a>
+
+<ul>
+    <% for (let campground of campgrounds) { %>
+    <li>
+        <a href="<%= baseUrl %>/<%= campground._id %>">
+            <%= campground.title %>
+        </a>
+    </li>
+    <% } %>
+</ul>
+
+<%- include('partials/footer') %>

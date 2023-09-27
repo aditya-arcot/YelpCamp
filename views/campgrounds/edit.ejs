@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<h1>Edit Campground</h1>
+
+<form action="<%= baseUrl %>/<%= campground._id %>?_method=PUT" method="POST">
+    <div>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="campground[title]" value="<%= campground.title %>">
+    </div>
+    <div>
+        <label for="location">Location</label>
+        <input type="text" id="location" name="campground[location]" value="<%= campground.location %>">
+    </div>
+    <button>Update</button>
+</form>
+
+<form action="<%= baseUrl %>/<%= campground._id %>">
+    <button>Back</button>
+</form>
+
+<%- include('partials/footer') %>
