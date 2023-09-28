@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 const path = require('path')
 const methodOverride = require('method-override')
+const ejsMate = require('ejs-mate')
 const Campground = require('./models/campground')
 
 // db connection
@@ -22,13 +23,14 @@ const webPort = 3000
 const baseUrl = '/campgrounds'
 const campgroundViewsPath = 'campgrounds'
 
+app.engine('ejs', ejsMate) // override default ejs engine
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
-    res.render('home')
+    res.render('home', { title: 'Home', baseUrl })
 })
 
 app.get(baseUrl, async (req, res) => {
@@ -64,7 +66,7 @@ app.get(path.join(baseUrl, ':id', 'edit'), async (req, res) => {
 
 app.put(path.join(baseUrl, ':id'), async (req, res) => {
     const { id } = req.params
-    await Campground.findByIdAndUpdate(id, {...req.body.campground})
+    await Campground.findByIdAndUpdate(id, { ...req.body.campground })
     res.redirect(path.join(baseUrl, id.toString()))
 })
 
