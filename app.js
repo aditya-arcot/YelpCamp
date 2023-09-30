@@ -3,7 +3,10 @@ const express = require('express')
 const path = require('path')
 const methodOverride = require('method-override')
 const ejsMate = require('ejs-mate')
+const {campgroundSchema} = require('./schemas')
 const Campground = require('./models/campground')
+const ExpressError = require('./utils/ExpressError')
+const catchAsync = require('./utils/catchAsync')
 
 // db connection
 const mongoPort = 27017
@@ -29,51 +32,72 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+const validateCampground = (req, res, next) => {
+    const { error } = campgroundSchema.validate(req.body)
+    if (error) {
+        // handle multiple errors
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    }
+    else {
+        next()
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home', { title: 'Home', baseUrl })
 })
 
-app.get(baseUrl, async (req, res) => {
+app.get(baseUrl, catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({})
     res.render(path.join(campgroundViewsPath, 'index'),
         { title: 'Campgrounds', baseUrl, campgrounds })
-})
+}))
 
-app.get(path.join(baseUrl, 'new'), async (req, res) => {
+app.get(path.join(baseUrl, 'new'), catchAsync(async (req, res) => {
     res.render(path.join(campgroundViewsPath, 'new'),
         { title: 'New Campground', baseUrl })
-})
+}))
 
-app.post(baseUrl, async (req, res) => {
+app.post(baseUrl, validateCampground, catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground)
     await campground.save()
     res.redirect(path.join(baseUrl, campground._id.toString()))
-})
+}))
 
-app.get(path.join(baseUrl, ':id'), async (req, res) => {
+app.get(path.join(baseUrl, ':id'), catchAsync(async (req, res) => {
     const { id } = req.params
     const campground = await Campground.findById(id)
     res.render(path.join(campgroundViewsPath, 'show'),
         { title: 'Campground Details', baseUrl, campground })
-})
+}))
 
-app.get(path.join(baseUrl, ':id', 'edit'), async (req, res) => {
+app.get(path.join(baseUrl, ':id', 'edit'), catchAsync(async (req, res) => {
     const { id } = req.params
     const campground = await Campground.findById(id)
     res.render(path.join(campgroundViewsPath, 'edit'),
         { title: 'Edit Campground', baseUrl, campground })
-})
+}))
 
-app.put(path.join(baseUrl, ':id'), async (req, res) => {
+app.put(path.join(baseUrl, ':id'), validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params
     await Campground.findByIdAndUpdate(id, { ...req.body.campground })
     res.redirect(path.join(baseUrl, id.toString()))
-})
+}))
 
-app.delete(path.join(baseUrl, ':id'), async (req, res) => {
+app.delete(path.join(baseUrl, ':id'), catchAsync(async (req, res) => {
     const { id } = req.params
     await Campground.findByIdAndDelete(id)
     res.redirect(baseUrl)
+}))
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+
+app.use((err, req, res, next) => {
+    const { status = 500 } = err
+    res.status(status).render('error', { title: 'Error', baseUrl, err })
 })
 
 app.listen(webPort, () => {
