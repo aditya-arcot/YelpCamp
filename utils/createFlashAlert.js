@@ -1,9 +1,4 @@
-class FlashMessage {
-    constructor(text, type) {
-        this.text = text
-        this.type = type
-    }
-}
+const FlashMessage = require('./FlashMessage')
 
 module.exports.createSuccessFlashAlert = function (req, text) {
     req.flash('alerts', new FlashMessage(text, 'success'))
