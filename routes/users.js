@@ -3,7 +3,7 @@ const passport = require('passport')
 const User = require('../models/user')
 const catchAsync = require('../utils/catchAsync')
 const { createSuccessFlashAlert, createErrorFlashAlert } = require('../utils/createFlashAlert')
-const { storeReturnTo } = require('../middleware')
+const { storeRedirectUrl } = require('../middleware')
 
 const router = express.Router({ mergeParams: true })
 
@@ -29,14 +29,14 @@ router.get('/login', (req, res) => {
     res.render('users/login', { title: 'Login' })
 })
 router.post('/login',
-    storeReturnTo,
+    storeRedirectUrl,
     passport.authenticate('local', {
         failureFlash: true,
         failureRedirect: '/login'
     }),
     catchAsync(async (req, res) => {
         createSuccessFlashAlert(req, 'Welcome Back!')
-        const redirectUrl = res.locals.returnTo || '/campgrounds'
+        const redirectUrl = res.locals.redirectUrl || '/campgrounds'
         res.redirect(redirectUrl)
     })
 )

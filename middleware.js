@@ -2,16 +2,22 @@ const { createErrorFlashAlert } = require('./utils/createFlashAlert')
 
 module.exports.checkAuthentication = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        req.session.returnTo = req.originalUrl
+        if (req.originalMethod === 'GET') {
+            req.session.redirectUrl = req.originalUrl
+        }
+        else {
+            req.session.redirectUrl = undefined
+        }
         createErrorFlashAlert(req, 'You must be signed in!')
         return res.redirect('/login')
     }
     next()
 }
 
-module.exports.storeReturnTo = (req, res, next) => {
-    if (req.session.returnTo) {
-        res.locals.returnTo = req.session.returnTo
+
+module.exports.storeRedirectUrl = (req, res, next) => {
+    if (req.session.redirectUrl) {
+        res.locals.redirectUrl = req.session.redirectUrl
     }
     next()
 }
