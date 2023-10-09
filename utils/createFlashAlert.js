@@ -5,6 +5,9 @@ class FlashMessage {
     }
 }
 
-module.exports = function (req, text, type = 'success' ) {
-    req.flash('alerts', new FlashMessage(text, type))
+module.exports.createSuccessFlashAlert = function (req, text) {
+    req.flash('alerts', new FlashMessage(text, 'success'))
+}
+module.exports.createErrorFlashAlert = function (req, text) {
+    req.flash('alerts', new FlashMessage(text, 'error'))
 }

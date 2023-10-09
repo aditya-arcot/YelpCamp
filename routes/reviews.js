@@ -2,7 +2,7 @@ const express = require('express')
 const Review = require('../models/review')
 const Campground = require('../models/campground')
 const catchAsync = require('../utils/catchAsync')
-const createFlashAlert = require('../utils/createFlashAlert')
+const { createSuccessFlashAlert } = require('../utils/createFlashAlert')
 const ExpressError = require('../utils/ExpressError')
 const { reviewSchema } = require('../schemas')
 
@@ -26,7 +26,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
     campground.reviews.push(review)
     await review.save()
     await campground.save()
-    createFlashAlert(req, 'Successfully created a new review!')
+    createSuccessFlashAlert(req, 'Successfully created a new review!')
     res.redirect(`/campgrounds/${id}`)
 }))
 
@@ -34,7 +34,7 @@ router.delete('/:reviewId', catchAsync(async (req, res) => {
     const { id, reviewId } = req.params
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
     await Review.findByIdAndDelete(reviewId)
-    createFlashAlert(req, 'Successfully deleted review!')
+    createSuccessFlashAlert(req, 'Successfully deleted review!')
     res.redirect(`/campgrounds/${id}`)
 }))
 
