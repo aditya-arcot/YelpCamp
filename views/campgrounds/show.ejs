@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-sm-6">
         <div class="card mb-3">
             <img src="<%= campground.image %>" class="card-img-top">
             <div class="card-body">
@@ -29,24 +29,27 @@
             All Campgrounds
         </a>
     </div>
-    <div class="col-6">
+    <div class="col-sm-6">
         <% if (currentUser){ %>
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground._id %>/reviews" class="mb-3 needs-validation" method="POST"
             novalidate>
-            <div>
-                <fieldset class="starability-basic">
-                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                    <label for="first-rate1" title="Terrible">1 star</label>
-                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                    <label for="first-rate2" title="Not good">2 stars</label>
-                    <input type="radio" id="first-rate3" name="review[rating]" value="3" checked />
-                    <label for="first-rate3" title="Average">3 stars</label>
-                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                    <label for="first-rate4" title="Very good">4 stars</label>
-                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                    <label for="first-rate5" title="Amazing">5 stars</label>
-                </fieldset>
+            <div class="mb-3">
+                <% const descriptions = ['Terrible', 'Not good', 'Average', 'Very good', 'Amazing'] %>
+                <% const svg_size = 30 %>
+                <% const svg_path_data = "M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1z" %>
+                <% descriptions.forEach((description, i) => { %>
+                <div class="form-check form-check-inline m-0 p-0 rating">
+                    <input type="radio" id="input<%= i+1 %>" class="form-check-input rating-input" name="review[rating]"
+                        value="<%= i+1 %>" <%= i === 0 ? "required" : '' %> hidden>
+                    <label for="input<%= i+1 %>" title="<%= description %>">
+                        <svg class="rating-icon" width="<%= svg_size %>" height="<%= svg_size %>" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="<%= svg_path_data %>">
+                        </svg>
+                    </label>
+                </div>
+                <% }) %>
             </div>
             <div class="mb-3">
                 <textarea class="form-control" name="review[body]" id="body" rows="3" required></textarea>
@@ -81,3 +84,26 @@
         <% } %>
     </div>
 </div>
+
+<script>
+    const all_ratings = document.querySelectorAll('.rating')
+    all_ratings.forEach(rating => {
+        rating.addEventListener('click', () => {
+            rating.addEventListener('click', () => {
+                all_ratings.forEach(rating => {
+                    rating.classList.remove('warning')
+                })
+            })
+
+            const input = rating.querySelector('input')
+            const value = input.value
+            all_ratings.forEach((rating, index) => {
+                if (index < value) {
+                    rating.classList.add('selected');
+                } else {
+                    rating.classList.remove('selected');
+                }
+            })
+        })
+    });
+</script>

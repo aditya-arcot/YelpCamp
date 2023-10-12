@@ -1,0 +1,14 @@
+.rating svg path {
+    fill: white;
+    stroke: black;
+    stroke-width: 1;
+}
+
+.rating.selected svg path {
+    fill: #F1F500;
+    stroke: black;
+}
+
+.rating.warning svg path {
+    stroke: red
+}
