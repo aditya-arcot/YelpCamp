@@ -32,8 +32,7 @@
     <div class="col-sm-6">
         <% if (currentUser){ %>
         <h2>Leave a Review</h2>
-        <form action="/campgrounds/<%= campground._id %>/reviews" class="mb-3 needs-validation" method="POST"
-            novalidate>
+        <form action="/campgrounds/<%= campground._id %>/reviews" class="mb-3 validation-form" method="POST" novalidate>
             <div class="mb-3">
                 <% const descriptions = ['Terrible', 'Not good', 'Average', 'Very good', 'Amazing'] %>
                 <% const svg_size = 30 %>
@@ -84,26 +83,3 @@
         <% } %>
     </div>
 </div>
-
-<script>
-    const all_ratings = document.querySelectorAll('.rating')
-    all_ratings.forEach(rating => {
-        rating.addEventListener('click', () => {
-            rating.addEventListener('click', () => {
-                all_ratings.forEach(rating => {
-                    rating.classList.remove('warning')
-                })
-            })
-
-            const input = rating.querySelector('input')
-            const value = input.value
-            all_ratings.forEach((rating, index) => {
-                if (index < value) {
-                    rating.classList.add('selected');
-                } else {
-                    rating.classList.remove('selected');
-                }
-            })
-        })
-    });
-</script>

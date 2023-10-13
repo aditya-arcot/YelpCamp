@@ -54,7 +54,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use((req, res, next) => {
     res.locals.alerts = req.flash('alerts')
-    for (let flash of req.flash('error')){
+    for (let flash of req.flash('error')) {
         res.locals.alerts.push(new FlashMessage(flash, 'error'))
     }
     res.locals.currentUser = req.user

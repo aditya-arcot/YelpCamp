@@ -22,7 +22,7 @@ module.exports.register = async (req, res, next) => {
 }
 
 module.exports.renderLoginForm = (req, res) => {
-    if (req.query.redirect_url){
+    if (req.query.redirect_url) {
         res.locals.redirect_url = req.query.redirect_url
     }
     res.render('users/login', { title: 'Login' })

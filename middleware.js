@@ -44,7 +44,7 @@ module.exports.validateReview = (req, res, next) => {
 }
 
 module.exports.parseRedirectUrl = (req, res, next) => {
-    if (req.query.redirect_url){
+    if (req.query.redirect_url) {
         res.locals.redirect_url = req.query.redirect_url
     }
     next()
