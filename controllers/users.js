@@ -22,13 +22,15 @@ module.exports.register = async (req, res, next) => {
 }
 
 module.exports.renderLoginForm = (req, res) => {
+    if (req.query.redirect_url){
+        res.locals.redirect_url = req.query.redirect_url
+    }
     res.render('users/login', { title: 'Login' })
 }
 
 module.exports.login = async (req, res) => {
     createSuccessFlashAlert(req, 'Welcome Back!')
-    const redirectUrl = res.locals.redirectUrl || '/campgrounds'
-    res.redirect(redirectUrl)
+    res.redirect(res.locals.redirect_url || '/campgrounds')
 }
 
 module.exports.logout = (req, res) => {

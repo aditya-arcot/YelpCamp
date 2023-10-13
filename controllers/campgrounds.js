@@ -35,7 +35,7 @@ module.exports.showCampground = async (req, res) => {
         return res.redirect('/campgrounds')
     }
     res.render('campgrounds/show',
-        { title: 'Campground Details', campground })
+        { title: 'Campground Details', campground, redirect_url: req.originalUrl })
 }
 
 module.exports.renderEditForm = async (req, res) => {

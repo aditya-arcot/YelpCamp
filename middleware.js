@@ -6,11 +6,10 @@ const { campgroundSchema, reviewSchema } = require('./schemas')
 
 module.exports.checkAuthentication = (req, res, next) => {
     if (req.isAuthenticated()) return next()
-    req.session.redirectUrl = undefined
-    if (req.originalMethod === 'GET') {
-        req.session.redirectUrl = req.originalUrl
-    }
     createErrorFlashAlert(req, 'You must be signed in!')
+    if (req.originalMethod === 'GET') {
+        return res.redirect(`/login?redirect_url=${req.originalUrl}`)
+    }
     return res.redirect('/login')
 }
 
@@ -44,9 +43,9 @@ module.exports.validateReview = (req, res, next) => {
     throw new ExpressError(msg, 400)
 }
 
-module.exports.storeRedirectUrl = (req, res, next) => {
-    if (req.session.redirectUrl) {
-        res.locals.redirectUrl = req.session.redirectUrl
+module.exports.parseRedirectUrl = (req, res, next) => {
+    if (req.query.redirect_url){
+        res.locals.redirect_url = req.query.redirect_url
     }
     next()
 }
