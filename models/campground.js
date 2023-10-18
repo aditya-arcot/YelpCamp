@@ -15,10 +15,10 @@ imageSchema.virtual('thumbnail').get(function() {
 
 const campgroundSchema = new Schema({
     title: String,
-    images: [imageSchema],
+    location: String,
     price: Number,
     description: String,
-    location: String,
+    images: [imageSchema],
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
