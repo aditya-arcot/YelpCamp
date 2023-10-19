@@ -8,7 +8,7 @@ router.post('/',
     checkAuthentication,
     validateReview,
     catchAsync(reviews.createReview))
-    
+
 router.delete('/:reviewId',
     checkAuthentication,
     checkReviewAuthorization,

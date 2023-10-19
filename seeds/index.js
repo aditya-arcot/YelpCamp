@@ -59,15 +59,21 @@ const randElement = array => array[Math.floor(Math.random() * array.length)]
 function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+        [arr[i], arr[j]] = [arr[j], arr[i]]
     }
 }
 const seedCampgrounds = async (ids, stock_images, n = 10) => {
     for (let i = 0; i < n; i++) {
         const _id = i % 2 === 0 ? ids[0] : ids[1]
+
         const descriptor = randElement(descriptors)
         const place = randElement(places)
-        const location = randElement(cities)
+        const title = `${descriptor} ${place}`
+
+        const randomLocation = randElement(cities)
+        const location = `${randomLocation.city}, ${randomLocation.state}`
+        const coords = { 'lat': randomLocation.latitude, 'lng': randomLocation.longitude }
+
         const price = (10 * Math.random() + 10).toFixed(2)
 
         const shuffled_images = [...stock_images]
@@ -76,11 +82,12 @@ const seedCampgrounds = async (ids, stock_images, n = 10) => {
 
         const c = new Campground({
             author: _id,
-            title: `${descriptor} ${place}`,
-            location: `${location.city}, ${location.state}`,
+            title,
+            location,
             price,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic nobis repellendus doloremque perspiciatis, commodi aspernatur culpa, dignissimos aperiam officia accusantium autem dolorem, iure provident iusto odit quidem dolore consequatur. Accusamus.',
-            images
+            images,
+            coords
         })
         await c.save()
     }

@@ -1,5 +1,10 @@
 <% layout('layouts/boilerplate') %>
 
+<script>
+    const mapToken = '<%- process.env.MAPQUEST_KEY %>'
+    const campgroundString = '<%- JSON.stringify(campground) %>'
+</script>
+
 <div class="row">
     <div class="col-md-8">
         <div id="camgroundCarousel" class="carousel slide">
@@ -48,7 +53,7 @@
             </div>
             <% } %>
             <div class="card-footer text-muted">
-                2 days ago
+                <%= campground._id.getTimestamp().toLocaleString() %>
             </div>
         </div>
         <a class="btn btn-primary mb-3 d-md-inline-block d-none" href="/campgrounds">
@@ -56,6 +61,9 @@
         </a>
     </div>
     <div class="col-md-4">
+        <% if (campground.coords.lat && campground.coords.lng) { %>
+        <div class="mb-3" id="map" style="width: 100%; aspect-ratio : 1 / 1;"></div>
+        <% } %>
         <% if (currentUser){ %>
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground._id %>/reviews" class="mb-3 validation-form" method="POST" novalidate>
@@ -93,15 +101,16 @@
         <% for (let review of campground.reviews) { %>
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title"><%= review.author.username %></h5>
-                <p class="starability-result" data-rating="<%= review.rating %>">
-                    Rated: <%= review.rating %>
+                <h5 class="card-title mb-1"><%= review.author.username %></h5>
+                <p class="card-text mb-0">
+                    Rating: <%= review.rating %>
+                    <br>
+                    Review: <%= review.body %>
                 </p>
-                <p class="card-text">Review: <%= review.body %></p>
                 <% if (currentUser && review.author.equals(currentUser._id)) { %>
                 <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE"
                     method="POST">
-                    <button class="btn btn-sm btn-danger">Delete</button>
+                    <button class="btn btn-sm btn-danger mt-1">Delete</button>
                 </form>
                 <% } %>
             </div>
@@ -112,3 +121,5 @@
         </a>
     </div>
 </div>
+
+<script defer src="/js/showPageMap.js"></script>
