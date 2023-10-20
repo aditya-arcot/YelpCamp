@@ -18,7 +18,7 @@ L.mapquest
         }
     })
     .bindPopup(L.popup()
-        .setContent(`<h6><a href=/campgrounds/${campground._id}>` + campground.title + '</a></h6>' +
+        .setContent(`<strong><a href=/campgrounds/${campground._id}>` + campground.title + '</a></strong><br>' +
             campground.location
         )
     )

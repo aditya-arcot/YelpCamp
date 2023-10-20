@@ -69,7 +69,6 @@ module.exports.updateCampground = async (req, res) => {
     const coords = await getCoordsFromLocation(req.body.campground.location)
     updates.coords = coords ? coords : {}
     await campground.updateOne({ $set: updates })
-    console.log(campground)
     createSuccessFlashAlert(req, 'Successfully updated campground!')
     res.redirect(`/campgrounds/${id}`)
 }

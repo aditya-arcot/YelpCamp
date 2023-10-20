@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const Campground = require('../models/campground')
 const User = require('../models/user')
 const Review = require('../models/review')
-const cities = require('./cities')
+const locations = require('./locations')
 const { descriptors, places } = require('./seedHelpers')
 const { cloudinary } = require('../cloudinary')
 
@@ -62,17 +62,16 @@ function shuffleArray(arr) {
         [arr[i], arr[j]] = [arr[j], arr[i]]
     }
 }
-const seedCampgrounds = async (ids, stock_images, n = 10) => {
-    for (let i = 0; i < n; i++) {
+const seedCampgrounds = async (ids, stock_images) => {
+    for (const [i, location] of locations.entries()) {
         const _id = i % 2 === 0 ? ids[0] : ids[1]
 
         const descriptor = randElement(descriptors)
         const place = randElement(places)
         const title = `${descriptor} ${place}`
 
-        const randomLocation = randElement(cities)
-        const location = `${randomLocation.city}, ${randomLocation.state}`
-        const coords = { 'lat': randomLocation.latitude, 'lng': randomLocation.longitude }
+        const locationStr = `${location.city}, ${location.state}`
+        const coords = { 'lat': location.latitude, 'lng': location.longitude }
 
         const price = (10 * Math.random() + 10).toFixed(2)
 
@@ -83,7 +82,7 @@ const seedCampgrounds = async (ids, stock_images, n = 10) => {
         const c = new Campground({
             author: _id,
             title,
-            location,
+            location: locationStr,
             price,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic nobis repellendus doloremque perspiciatis, commodi aspernatur culpa, dignissimos aperiam officia accusantium autem dolorem, iure provident iusto odit quidem dolore consequatur. Accusamus.',
             images,
