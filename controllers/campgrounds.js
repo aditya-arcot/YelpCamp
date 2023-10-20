@@ -1,6 +1,7 @@
 const Campground = require('../models/campground')
-const { createSuccessFlashAlert, createErrorFlashAlert } = require('../utils/createFlashAlert')
+const { createSuccessFlashAlert } = require('../utils/createFlashAlert')
 const getCoordsFromLocation = require('../utils/getCoordsFromLocation')
+const { findCampgroundById } = require('../utils/findMongooseObject')
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({})
@@ -28,17 +29,9 @@ module.exports.createCampground = async (req, res, next) => {
 
 module.exports.showCampground = async (req, res) => {
     const { id } = req.params
-    const campground = await Campground.findById(id)
-        .populate({
-            path: 'reviews',
-            populate: {
-                path: 'author'
-            }
-        })
-        .populate('author')
+    const campground = await findCampgroundById(req, res, id)
     if (!campground) {
-        createErrorFlashAlert(req, 'Cannot find that campground!')
-        return res.redirect('/campgrounds')
+        return
     }
     res.render('campgrounds/show',
         { title: 'Campground Details', campground, redirect_url: req.originalUrl })
@@ -46,10 +39,9 @@ module.exports.showCampground = async (req, res) => {
 
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params
-    const campground = await Campground.findById(id)
+    const campground = await findCampgroundById(req, res, id)
     if (!campground) {
-        createErrorFlashAlert(req, 'Cannot find that campground!')
-        return res.redirect('/campgrounds')
+        return
     }
     res.render('campgrounds/edit',
         { title: 'Edit Campground', campground })
@@ -57,7 +49,10 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateCampground = async (req, res) => {
     const { id } = req.params
-    const campground = await Campground.findById(id)
+    const campground = await findCampgroundById(req, res, id)
+    if (!campground) {
+        return
+    }
     const updates = { ...req.body.campground }
     if (req.files) {
         const new_images = req.files.map(f => ({ url: f.path, filename: f.filename }))
@@ -75,7 +70,11 @@ module.exports.updateCampground = async (req, res) => {
 
 module.exports.deleteCampground = async (req, res) => {
     const { id } = req.params
-    await Campground.findByIdAndDelete(id)
+    const campground = await findCampgroundById(req, res, id)
+    if (!campground) {
+        return
+    }
+    await campground.deleteOne()
     createSuccessFlashAlert(req, 'Successfully deleted campground!')
     res.redirect('/campgrounds')
 }

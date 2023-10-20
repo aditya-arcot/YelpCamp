@@ -1,10 +1,13 @@
 const Review = require('../models/review')
-const Campground = require('../models/campground')
 const { createSuccessFlashAlert } = require('../utils/createFlashAlert')
+const { findCampgroundById, findReviewById } = require('../utils/findMongooseObject')
 
 module.exports.createReview = async (req, res) => {
     const { id } = req.params
-    const campground = await Campground.findById(id)
+    const campground = await findCampgroundById(req, res, id)
+    if (!campground) {
+        return
+    }
     const review = new Review(req.body.review)
     review.author = req.user._id
     campground.reviews.push(review)
@@ -16,8 +19,16 @@ module.exports.createReview = async (req, res) => {
 
 module.exports.deleteReview = async (req, res) => {
     const { id, reviewId } = req.params
-    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
-    await Review.findByIdAndDelete(reviewId)
+    const campground = await findCampgroundById(req, res, id)
+    if (!campground) {
+        return
+    }
+    await campground.updateOne({ $pull: { reviews: reviewId } })
+    const review = await findReviewById(req, res, reviewId)
+    if (!review) {
+        return
+    }
+    await review.deleteOne()
     createSuccessFlashAlert(req, 'Successfully deleted review!')
     res.redirect(`/campgrounds/${id}`)
 }
