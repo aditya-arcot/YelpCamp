@@ -13,11 +13,11 @@
     <% for (let campground of campgrounds) { %>
     <div class="card mb-3">
         <div class="row">
+            <% if (campground.images.length) { %>
             <div class="col-lg d-flex justify-content-center align-items-center">
-                <% if (campground.images.length) { %>
-                <img class="img-fluid" src="<%= campground.images[0].default %>">
-                <% } %>
+                <img class="img-fluid" src="<%= campground.images[0].default %>" crossorigin="anonymous">
             </div>
+            <% } %>
             <div class="col-lg">
                 <div class="card-body">
                     <h5 class="card-title"><%= campground.title %></h5>

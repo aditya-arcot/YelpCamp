@@ -9,13 +9,16 @@ const methodOverride = require('method-override')
 const ejsMate = require('ejs-mate')
 const session = require('express-session')
 const flash = require('connect-flash')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+const mongoSanitize = require('express-mongo-sanitize')
+const helmet = require('helmet')
+
 const ExpressError = require('./utils/ExpressError')
 const FlashMessage = require('./utils/FlashMessage')
 const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
-const passport = require('passport')
-const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 
 // DATABASE
@@ -33,6 +36,43 @@ mongoose.connect(`mongodb://localhost:${mongoPort}/${mongoDB}`)
 const app = express()
 const webPort = 3000
 const weekTime = 1000 * 60 * 60 * 24 * 7
+const sessionConfig = {
+    name: 'session',
+    secret: 'secretplaceholder',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + weekTime,
+        // secure: true, // HTTPS
+        maxAge: weekTime,
+        httpOnly: true
+    }
+}
+
+const scriptSrcUrls = [
+    "https://cdn.jsdelivr.net", 
+    "https://api.mqcdn.com", 
+    "https://unpkg.com"
+]
+const styleSrcUrls = [
+    "https://cdn.jsdelivr.net",
+    "https://api.mqcdn.com",
+    "https://unpkg.com",
+]
+const connectSrcUrls = [
+    "http://www.mapquestapi.com",
+    "http://api-s.mqcdn.com",
+    "http://attribution.aws.mapquest.com"
+]
+const imgSrcUrls = [
+    "https://images.unsplash.com/",
+    "https://assets.mapquestapi.com",
+    "https://a.tiles.mapquest.com",
+    `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`
+]
+const fontSrcUrls = [
+    "https://api.mqcdn.com"
+]
 
 // setup
 app.engine('ejs', ejsMate)
@@ -43,17 +83,26 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(session({
-    secret: 'secretplaceholder',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        expires: Date.now() + weekTime,
-        maxAge: weekTime,
-        httpOnly: true
-    }
+app.use(mongoSanitize({
+    replaceWith: '_'
 }))
+app.use(session(sessionConfig))
 app.use(flash())
+app.use(helmet())
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [ "'self'", "blob:", "data:", ...imgSrcUrls],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+)
 app.use(passport.initialize())
 app.use(passport.session())
 app.use((req, res, next) => {

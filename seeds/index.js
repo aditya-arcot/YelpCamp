@@ -47,12 +47,10 @@ const deleteExisting = async () => {
     console.log('done deleting from mongo, cloudinary')
 }
 
-const seedUsers = async () => {
-    await User.register(new User({ username: 'nonroot', email: 'nonroot@nonroot' }), 'nonroot')
-    const rootUser = await User.register(new User({ username: 'root', email: 'root@root' }), 'root')
-    const rootUser2 = await User.register(new User({ username: 'root2', email: 'root2@root' }), 'root2')
-    console.log('done seeding users')
-    return [rootUser._id, rootUser2._id]
+const seedUser = async () => {
+    const admin = await User.register(new User({ username: 'admin', email: 'admin@admin' }), process.env.MONGO_ADMIN_PASSWORD)
+    console.log('done seeding user')
+    return admin._id
 }
 
 const randElement = array => array[Math.floor(Math.random() * array.length)]
@@ -62,10 +60,8 @@ function shuffleArray(arr) {
         [arr[i], arr[j]] = [arr[j], arr[i]]
     }
 }
-const seedCampgrounds = async (ids, stock_images) => {
-    for (const [i, location] of locations.entries()) {
-        const _id = i % 2 === 0 ? ids[0] : ids[1]
-
+const seedCampgrounds = async (id, stock_images) => {
+    for (let location of locations) {
         const descriptor = randElement(descriptors)
         const place = randElement(places)
         const title = `${descriptor} ${place}`
@@ -80,7 +76,7 @@ const seedCampgrounds = async (ids, stock_images) => {
         const images = shuffled_images.slice(0, Math.floor(Math.random() * stock_images.length) + 1)
 
         const c = new Campground({
-            author: _id,
+            author: id,
             title,
             location: locationStr,
             price,
@@ -97,8 +93,8 @@ const stockImages = []
 populateDefaultImages(stockImages)
     .then(() => connectToMongoose())
     .then(() => deleteExisting())
-    .then(() => seedUsers())
-    .then((ids) => seedCampgrounds(ids, stockImages))
+    .then(() => seedUser())
+    .then((id) => seedCampgrounds(id, stockImages))
     .then(() => mongoose.connection.close())
     .catch(ex => console.log(ex))
 
