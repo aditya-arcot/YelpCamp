@@ -4,7 +4,7 @@ L.mapquest.key = mapToken
 
 var baseLayer = L.mapquest.tileLayer('map')
 
-var map = L.mapquest.map('map', {
+var map = L.mapquest.map('clusterMap', {
     center: L.latLng([39.8283, -98.5795]),
     layers: baseLayer,
     zoom: 4
@@ -25,3 +25,4 @@ for (let campground of campgrounds) {
 }
 
 map.addLayer(markers)
+map.addControl(L.mapquest.control())

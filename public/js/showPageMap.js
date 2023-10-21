@@ -2,7 +2,7 @@ const campground = JSON.parse(campgroundString)
 
 L.mapquest.key = mapToken
 
-var map = L.mapquest.map('map', {
+var map = L.mapquest.map('showPageMap', {
     center: [campground.coords.lat, campground.coords.lng],
     layers: L.mapquest.tileLayer('map'),
     zoom: 12
@@ -23,3 +23,5 @@ L.mapquest
         )
     )
     .addTo(map)
+
+map.addControl(L.mapquest.control())
