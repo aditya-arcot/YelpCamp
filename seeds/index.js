@@ -47,7 +47,8 @@ const deleteExisting = async () => {
     await Review.deleteMany({})
     await User.deleteMany({})
     await Campground.deleteMany({})
-    await cloudinary.api.delete_resources_by_prefix('YelpCamp/custom/')
+    const custom_images_prefix = process.env.NODE_ENV === 'production' ? 'YelpCamp/custom/prod' : 'YelpCamp/custom/nonprod'
+    await cloudinary.api.delete_resources_by_prefix(custom_images_prefix)
     console.log('done deleting from mongo, cloudinary')
 }
 

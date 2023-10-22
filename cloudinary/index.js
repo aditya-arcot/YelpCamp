@@ -10,7 +10,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary,
     params: {
-        folder: 'YelpCamp/custom/'
+        folder: process.env.NODE_ENV === 'production' ? 'YelpCamp/custom/prod' : 'YelpCamp/custom/nonprod'
     }
 })
 
