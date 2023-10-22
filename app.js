@@ -1,13 +1,11 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-}
-
+require('dotenv').config()
 const mongoose = require('mongoose')
 const express = require('express')
 const path = require('path')
 const methodOverride = require('method-override')
 const ejsMate = require('ejs-mate')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')
 const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
@@ -24,21 +22,32 @@ const User = require('./models/user')
 // DATABASE
 const mongoPort = 27017
 const mongoDB = 'yelp-camp'
-
-mongoose.connect(`mongodb://localhost:${mongoPort}/${mongoDB}`)
-    .then(() => console.log('connected to mongo'))
-    .catch((err) => {
-        console.log('connection to mongo failed')
-        console.log(err)
+let dbUrl = `mongodb://localhost:${mongoPort}/${mongoDB}`
+if (process.env.NODE_ENV === 'production' && process.env.MONGO_URL) {
+    dbUrl = process.env.MONGO_URL
+}
+const connectToMongo = async url => {
+    console.log(`mongo url - ${url}`)
+    await mongoose.connect(url, {
+        serverSelectionTimeoutMS: 5000
     })
+    console.log('connected to mongo')
+}
 
 // WEB APP
 const app = express()
-const webPort = 3000
+const webPort = process.env.PORT || 3000
 const weekTime = 1000 * 60 * 60 * 24 * 7
+const secret = process.env.SESSIONS_SECRET || 'secretplaceholder'
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: { secret }
+})
 const sessionConfig = {
+    store,
     name: 'session',
-    secret: 'secretplaceholder',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -50,8 +59,8 @@ const sessionConfig = {
 }
 
 const scriptSrcUrls = [
-    "https://cdn.jsdelivr.net", 
-    "https://api.mqcdn.com", 
+    "https://cdn.jsdelivr.net",
+    "https://api.mqcdn.com",
     "https://unpkg.com"
 ]
 const styleSrcUrls = [
@@ -97,8 +106,9 @@ app.use(
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
             workerSrc: ["'self'", "blob:"],
+            childSrc: ["blob:"],
             objectSrc: [],
-            imgSrc: [ "'self'", "blob:", "data:", ...imgSrcUrls],
+            imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
     })
@@ -134,6 +144,11 @@ app.use((err, req, res, next) => {
 })
 
 // start
-app.listen(webPort, () => {
-    console.log(`server started on port ${webPort}`)
-})
+connectToMongo(dbUrl)
+    .then(() => app.listen(webPort, () => {
+        console.log(`server started on port ${webPort}`)
+    }))
+    .catch(ex => {
+        console.log(ex)
+        process.exit(1)
+    })

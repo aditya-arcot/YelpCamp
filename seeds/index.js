@@ -1,7 +1,4 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-}
-
+require('dotenv').config()
 const mongoose = require('mongoose')
 const Campground = require('../models/campground')
 const User = require('../models/user')
@@ -12,6 +9,10 @@ const { cloudinary } = require('../cloudinary')
 
 const mongoPort = 27017
 const mongoDB = 'yelp-camp'
+let dbUrl = `mongodb://localhost:${mongoPort}/${mongoDB}`
+if (process.env.NODE_ENV === 'production' && process.env.MONGO_URL) {
+    dbUrl = process.env.MONGO_URL
+}
 
 const populateDefaultImages = async (stockImages) => {
     const resp = await cloudinary.api.resources(
@@ -34,9 +35,12 @@ const populateDefaultImages = async (stockImages) => {
     console.log('done populating images')
 }
 
-const connectToMongoose = async () => {
-    await mongoose.connect(`mongodb://localhost:${mongoPort}/${mongoDB}`)
-    console.log('done connecting to mongo')
+const connectToMongo = async url => {
+    console.log(`mongo url - ${url}`)
+    await mongoose.connect(url, {
+        serverSelectionTimeoutMS: 5000
+    })
+    console.log('connected to mongo')
 }
 
 const deleteExisting = async () => {
@@ -91,7 +95,7 @@ const seedCampgrounds = async (id, stock_images) => {
 
 const stockImages = []
 populateDefaultImages(stockImages)
-    .then(() => connectToMongoose())
+    .then(() => connectToMongo(dbUrl))
     .then(() => deleteExisting())
     .then(() => seedUser())
     .then((id) => seedCampgrounds(id, stockImages))
