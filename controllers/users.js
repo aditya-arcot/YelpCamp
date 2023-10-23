@@ -33,7 +33,7 @@ module.exports.login = async (req, res) => {
     res.redirect(res.locals.redirect_url || '/campgrounds')
 }
 
-module.exports.logout = (req, res) => {
+module.exports.logout = (req, res, next) => {
     req.logout(function (e) {
         if (e) return next(e)
         createSuccessFlashAlert(req, 'Goodbye!')

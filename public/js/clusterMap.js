@@ -1,7 +1,7 @@
+/* global campgroundsString, mapToken, L*/
+
 const campgrounds = JSON.parse(campgroundsString)
-
 L.mapquest.key = mapToken
-
 var baseLayer = L.mapquest.tileLayer('map')
 
 var map = L.mapquest.map('clusterMap', {

@@ -1,4 +1,3 @@
-const Review = require('./models/review')
 const { createErrorFlashAlert } = require('./utils/createFlashAlert')
 const ExpressError = require('./utils/ExpressError')
 const { campgroundSchema, reviewSchema } = require('./schemas')

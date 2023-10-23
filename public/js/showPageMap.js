@@ -1,5 +1,6 @@
-const campground = JSON.parse(campgroundString)
+/* global campgroundString, mapToken, L*/
 
+const campground = JSON.parse(campgroundString)
 L.mapquest.key = mapToken
 
 var map = L.mapquest.map('showPageMap', {

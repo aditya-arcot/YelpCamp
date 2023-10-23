@@ -59,28 +59,28 @@ const sessionConfig = {
 }
 
 const scriptSrcUrls = [
-    "https://cdn.jsdelivr.net",
-    "https://api.mqcdn.com",
-    "https://unpkg.com"
+    'https://cdn.jsdelivr.net',
+    'https://api.mqcdn.com',
+    'https://unpkg.com'
 ]
 const styleSrcUrls = [
-    "https://cdn.jsdelivr.net",
-    "https://api.mqcdn.com",
-    "https://unpkg.com",
+    'https://cdn.jsdelivr.net',
+    'https://api.mqcdn.com',
+    'https://unpkg.com',
 ]
 const connectSrcUrls = [
-    "http://www.mapquestapi.com",
-    "http://api-s.mqcdn.com",
-    "http://attribution.aws.mapquest.com"
+    'http://www.mapquestapi.com',
+    'http://api-s.mqcdn.com',
+    'http://attribution.aws.mapquest.com'
 ]
 const imgSrcUrls = [
-    "https://images.unsplash.com/",
-    "https://assets.mapquestapi.com",
-    "https://a.tiles.mapquest.com",
+    'https://images.unsplash.com/',
+    'https://assets.mapquestapi.com',
+    'https://a.tiles.mapquest.com',
     `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`
 ]
 const fontSrcUrls = [
-    "https://api.mqcdn.com"
+    'https://api.mqcdn.com'
 ]
 
 // setup
@@ -102,14 +102,14 @@ app.use(
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: [],
-            connectSrc: ["'self'", ...connectSrcUrls],
-            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-            workerSrc: ["'self'", "blob:"],
-            childSrc: ["blob:"],
+            connectSrc: ['\'self\'', ...connectSrcUrls],
+            scriptSrc: ['\'unsafe-inline\'', '\'self\'', ...scriptSrcUrls],
+            styleSrc: ['\'self\'', '\'unsafe-inline\'', ...styleSrcUrls],
+            workerSrc: ['\'self\'', 'blob:'],
+            childSrc: ['blob:'],
             objectSrc: [],
-            imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls],
-            fontSrc: ["'self'", ...fontSrcUrls],
+            imgSrc: ['\'self\'', 'blob:', 'data:', ...imgSrcUrls],
+            fontSrc: ['\'self\'', ...fontSrcUrls],
         },
     })
 )
@@ -138,6 +138,7 @@ app.all('*', (req, res, next) => {
 })
 
 // error handler
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
     const { status = 500 } = err
     res.status(status).render('error', { title: 'Error', err })

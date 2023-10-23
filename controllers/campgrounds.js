@@ -14,7 +14,7 @@ module.exports.renderNewForm = async (req, res) => {
         { title: 'New Campground' })
 }
 
-module.exports.createCampground = async (req, res, next) => {
+module.exports.createCampground = async (req, res) => {
     const campground = new Campground(req.body.campground)
     campground.author = req.user._id
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
