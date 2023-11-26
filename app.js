@@ -110,6 +110,7 @@ app.use(
             objectSrc: [],
             imgSrc: ['\'self\'', 'blob:', 'data:', ...imgSrcUrls],
             fontSrc: ['\'self\'', ...fontSrcUrls],
+            manifestSrc: ['\'self\''],
         },
     })
 )
