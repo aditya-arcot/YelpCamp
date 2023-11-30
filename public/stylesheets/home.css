@@ -1,5 +1,6 @@
 body {
-    height: 100vh;
+    height: 100vh; /* fallback */
+    height: 100dvh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
         url("https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80");
     background-size: cover;
@@ -24,5 +25,4 @@ body {
 .nav-link.active {
     color: white;
     border-bottom-color: white;
-
 }
