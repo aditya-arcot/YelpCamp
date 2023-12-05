@@ -37,6 +37,6 @@ module.exports.logout = (req, res, next) => {
     req.logout(function (e) {
         if (e) return next(e)
         createSuccessFlashAlert(req, 'Goodbye!')
-        res.redirect('/campgrounds')
+        res.redirect('/')
     })
 }
