@@ -1,5 +1,5 @@
 const Campground = require('../models/campground')
-const { createSuccessFlashAlert } = require('../utils/createFlashAlert')
+const { createSuccessFlashAlert, reflashAlerts } = require('../utils/createFlashAlert')
 const getCoordsFromLocation = require('../utils/getCoordsFromLocation')
 const { findCampgroundById } = require('../utils/findMongooseObject')
 const pageSize = 5
@@ -9,8 +9,14 @@ module.exports.index = async (req, res) => {
     let maxPage = Math.ceil(campgrounds.length / pageSize)
 
     let page = parseInt(req.query.page)
-    if (!page || page < 1) return res.redirect('/campgrounds?page=1')
-    if (page > maxPage) return res.redirect(`/campgrounds?page=${maxPage}`)
+    if (!page || page < 1) {
+        reflashAlerts(req, res)
+        return res.redirect('/campgrounds?page=1')
+    }
+    if (page > maxPage) {
+        reflashAlerts(req, res)
+        return res.redirect(`/campgrounds?page=${maxPage}`)
+    }
 
     let startIdx = (page - 1) * pageSize
     let endIdx = Math.min(startIdx + pageSize, campgrounds.length)

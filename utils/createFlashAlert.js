@@ -6,3 +6,10 @@ module.exports.createSuccessFlashAlert = function (req, text) {
 module.exports.createErrorFlashAlert = function (req, text) {
     req.flash('alerts', new FlashMessage(text, 'error'))
 }
+
+module.exports.reflashAlerts = function (req, res) {
+    for (let alert of res.locals.alerts)
+    {
+        req.flash('alerts', alert)
+    }
+}
