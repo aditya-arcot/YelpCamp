@@ -5,8 +5,7 @@
 
     <%- include('../partials/pagination') %>
 
-    <% for (let i = startIdx; i < endIdx; i++) { %>
-    <% let campground = campgrounds[i] %>
+    <% for (let campground of campgrounds) { %>
     <div class="card mb-3">
         <div class="row">
             <% if (campground.images.length) { %>
