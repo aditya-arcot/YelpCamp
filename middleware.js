@@ -20,7 +20,7 @@ module.exports.checkCampgroundAuthorization = async (req, res, next) => {
     }
     if (campground.author.equals(req.user._id)) return next()
     createErrorFlashAlert(req, 'You do not have permission do that!')
-    res.redirect(`/campgrounds/${id}`)
+    return res.redirect(`/campgrounds/${id}`)
 }
 
 module.exports.validateCampground = (req, res, next) => {
@@ -38,7 +38,7 @@ module.exports.checkReviewAuthorization = async (req, res, next) => {
     }
     if (review.author.equals(req.user._id)) return next()
     createErrorFlashAlert(req, 'You do not have permission do that!')
-    res.redirect(`/campgrounds/${id}`)
+    return res.redirect(`/campgrounds/${id}`)
 }
 
 module.exports.validateReview = (req, res, next) => {

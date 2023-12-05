@@ -9,8 +9,8 @@ module.exports.index = async (req, res) => {
     let maxPage = Math.ceil(campgrounds.length / pageSize)
 
     let page = parseInt(req.query.page)
-    if (!page || page < 1) res.redirect('/campgrounds?page=1')
-    if (page > maxPage) res.redirect(`/campgrounds?page=${maxPage}`)
+    if (!page || page < 1) return res.redirect('/campgrounds?page=1')
+    if (page > maxPage) return res.redirect(`/campgrounds?page=${maxPage}`)
 
     let startIdx = (page - 1) * pageSize
     let endIdx = Math.min(startIdx + pageSize, campgrounds.length)
@@ -34,7 +34,7 @@ module.exports.createCampground = async (req, res) => {
     }
     await campground.save()
     createSuccessFlashAlert(req, 'Successfully created a new campground!')
-    res.redirect(`/campgrounds/${campground._id}`)
+    return res.redirect(`/campgrounds/${campground._id}`)
 }
 
 module.exports.showCampground = async (req, res) => {
@@ -75,7 +75,7 @@ module.exports.updateCampground = async (req, res) => {
     updates.coords = coords ? coords : {}
     await campground.updateOne({ $set: updates })
     createSuccessFlashAlert(req, 'Successfully updated campground!')
-    res.redirect(`/campgrounds/${id}`)
+    return res.redirect(`/campgrounds/${id}`)
 }
 
 module.exports.deleteCampground = async (req, res) => {
@@ -86,5 +86,5 @@ module.exports.deleteCampground = async (req, res) => {
     }
     await campground.deleteOne()
     createSuccessFlashAlert(req, 'Successfully deleted campground!')
-    res.redirect('/campgrounds')
+    return res.redirect('/campgrounds')
 }

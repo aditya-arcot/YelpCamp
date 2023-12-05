@@ -14,7 +14,7 @@ module.exports.createReview = async (req, res) => {
     await review.save()
     await campground.save()
     createSuccessFlashAlert(req, 'Successfully created a new review!')
-    res.redirect(`/campgrounds/${id}`)
+    return res.redirect(`/campgrounds/${id}`)
 }
 
 module.exports.deleteReview = async (req, res) => {
@@ -30,5 +30,5 @@ module.exports.deleteReview = async (req, res) => {
     }
     await review.deleteOne()
     createSuccessFlashAlert(req, 'Successfully deleted review!')
-    res.redirect(`/campgrounds/${id}`)
+    return res.redirect(`/campgrounds/${id}`)
 }

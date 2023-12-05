@@ -30,13 +30,13 @@ module.exports.renderLoginForm = (req, res) => {
 
 module.exports.login = async (req, res) => {
     createSuccessFlashAlert(req, 'Welcome Back!')
-    res.redirect(res.locals.redirect_url || '/campgrounds')
+    return res.redirect(res.locals.redirect_url || '/campgrounds')
 }
 
 module.exports.logout = (req, res, next) => {
     req.logout(function (e) {
         if (e) return next(e)
         createSuccessFlashAlert(req, 'Goodbye!')
-        res.redirect('/')
+        return res.redirect('/')
     })
 }
