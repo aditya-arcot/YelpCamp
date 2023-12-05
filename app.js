@@ -13,7 +13,6 @@ const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
 
 const ExpressError = require('./utils/ExpressError')
-const FlashMessage = require('./utils/FlashMessage')
 const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
@@ -118,9 +117,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use((req, res, next) => {
     res.locals.alerts = req.flash('alerts')
-    for (let flash of req.flash('error')) {
-        res.locals.alerts.push(new FlashMessage(flash, 'error'))
-    }
     res.locals.currentUser = req.user
     next()
 })
