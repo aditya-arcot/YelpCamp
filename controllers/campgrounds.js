@@ -2,11 +2,21 @@ const Campground = require('../models/campground')
 const { createSuccessFlashAlert } = require('../utils/createFlashAlert')
 const getCoordsFromLocation = require('../utils/getCoordsFromLocation')
 const { findCampgroundById } = require('../utils/findMongooseObject')
+const pageSize = 5
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({})
+    let maxPage = Math.ceil(campgrounds.length / pageSize)
+
+    let page = parseInt(req.query.page)
+    if (!page || page < 1) res.redirect('/campgrounds?page=1')
+    if (page > maxPage) res.redirect(`/campgrounds?page=${maxPage}`)
+
+    let startIdx = (page - 1) * pageSize
+    let endIdx = Math.min(startIdx + pageSize, campgrounds.length)
+
     res.render('campgrounds/index',
-        { title: 'Campgrounds', campgrounds })
+        { title: 'Campgrounds', campgrounds, page, maxPage, startIdx, endIdx })
 }
 
 module.exports.renderNewForm = async (req, res) => {

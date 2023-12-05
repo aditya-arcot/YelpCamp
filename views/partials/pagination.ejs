@@ -1,0 +1,75 @@
+<% if (maxPage > 1) { %>
+<div class="d-flex justify-content-center">
+    <nav>
+        <ul class="pagination pagination-sm me-2">
+            <li class="page-item <%= page == 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="/campgrounds?page=<%= page - 1 %>">Previous Page</a>
+            </li>
+        </ul>
+    </nav>
+
+    <nav>
+        <ul class="pagination pagination-sm">
+            <% if (page > 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=1">1</a>
+            </li>
+            <% } %>
+
+            <% if (page > 4) { %>
+            <li class="page-item disabled">
+                <div class="page-link">...</div>
+            </li>
+            <% } %>
+
+            <% if (page === 4) { %>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=<%= page - 2 %>"><%= page - 2 %></a>
+            </li>
+            <% } %>
+
+            <% if (page > 2) { %>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=<%= page - 1 %>"><%= page - 1 %></a>
+            </li>
+            <% } %>
+
+            <li class="page-item active">
+                <div class="page-link"><%= page %></div>
+            </li>
+
+            <% if (page < maxPage - 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=<%= page + 1 %>"><%= page + 1 %></a>
+            </li>
+            <% } %>
+
+            <% if (page === maxPage - 3) { %>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=<%= page + 2 %>"><%= page + 2 %></a>
+            </li>
+            <% } %>
+
+            <% if (page < maxPage - 3) { %>
+            <li class="page-item disabled">
+                <div class="page-link">...</div>
+            </li>
+            <% } %>
+
+            <% if (page < maxPage) { %>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=<%= maxPage %>"><%= maxPage %></a>
+            </li>
+            <% } %>
+        </ul>
+    </nav>
+
+    <nav>
+        <ul class="pagination pagination-sm ms-2">
+            <li class="page-item <%= page == maxPage ? 'disabled' : '' %>">
+                <a class="page-link" href="/campgrounds?page=<%= page + 1 %>">Next Page</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<% } %>
