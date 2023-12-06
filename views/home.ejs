@@ -21,6 +21,7 @@
             <nav class="nav nav-masthead justify-content-center float-md-right">
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
                 <a class="nav-link" href="/campgrounds">Campgrounds</a>
+                <a class="nav-link d-none d-sm-inline" href="/campgrounds/map">Map</a>
                 <% if(!currentUser) { %>
                 <a class="nav-link" href="/login">Login</a>
                 <a class="nav-link" href="/register">Register</a>
@@ -28,6 +29,10 @@
                 <a class="nav-link" href="/logout">Logout</a>
                 <% } %>
             </nav>
+
+            <div class="mt-2">
+                <%- include('./partials/flash') %>
+            </div>
         </header>
 
         <main>
@@ -35,7 +40,7 @@
             <p class="lead mb-2">Welcome to YelpCamp!</p>
             <p class="mb-2">
                 Jump right in and explore our many campgrounds. <br>
-                Feel free to share some of your own and comment on others!
+                Create a free account to share some of your own and comment on others!
             </p>
             <a href="/campgrounds" class="btn btn-sm btn-secondary">
                 View Campgrounds

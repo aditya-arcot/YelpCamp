@@ -9,6 +9,10 @@ body {
     box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
 }
 
+.alert {
+    text-shadow: none;
+}
+
 .nav-link {
     padding: 0.25rem 0;
     font-weight: 700;
