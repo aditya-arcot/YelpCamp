@@ -1,7 +1,5 @@
 <% layout('layouts/boilerplate') %>
 
-<link rel="stylesheet" href="/stylesheets/maps.css">
-
 <script>
     const mapToken = '<%- process.env.MAPQUEST_KEY %>'
     const campgroundsString = '<%- JSON.stringify(campgrounds).replace(/[\']/g, "&apos;") %>'
