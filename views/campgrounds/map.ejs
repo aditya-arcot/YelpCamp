@@ -1,0 +1,15 @@
+<% layout('layouts/boilerplate') %>
+
+<link rel="stylesheet" href="/stylesheets/maps.css">
+
+<script>
+    const mapToken = '<%- process.env.MAPQUEST_KEY %>'
+    const campgroundsString = '<%- JSON.stringify(campgrounds).replace(/[\']/g, "&apos;") %>'
+</script>
+
+<div class="col-lg-8 offset-lg-2">
+    <h1>All Campgrounds</h1>
+    <div class="mb-3" id="clusterMap"></div>
+</div>
+
+<script defer src="/js/clusterMap.js"></script>

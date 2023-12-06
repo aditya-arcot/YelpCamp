@@ -14,6 +14,9 @@ router.route('/')
         validateCampground,
         catchAsync(campgrounds.createCampground))
 
+router.route('/map')
+    .get(catchAsync(campgrounds.map))
+
 router.get('/new',
     checkAuthentication,
     catchAsync(campgrounds.renderNewForm))

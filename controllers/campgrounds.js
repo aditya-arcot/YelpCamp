@@ -25,6 +25,12 @@ module.exports.index = async (req, res) => {
         { title: 'Campgrounds', campgrounds, page, maxPage, startIdx, endIdx })
 }
 
+module.exports.map = async (req, res) => {
+    const campgrounds = await Campground.find({})
+    res.render('campgrounds/map',
+        { title: 'Cluster Map', campgrounds })
+}
+
 module.exports.renderNewForm = async (req, res) => {
     res.render('campgrounds/new',
         { title: 'New Campground' })
