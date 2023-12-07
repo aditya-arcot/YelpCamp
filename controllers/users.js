@@ -1,6 +1,13 @@
 const User = require('../models/user')
 const { createSuccessFlashAlert, createErrorFlashAlert } = require('../utils/createFlashAlert')
 
+module.exports.updatePageSize = async (req, res) => {
+    const { pageSize } = req.body
+    createSuccessFlashAlert(req, 'Updated default page size')
+    await req.user.updateOne({ $set: { pageSize: pageSize } })
+    return res.redirect('/campgrounds')
+}
+
 module.exports.renderRegisterForm = (req, res) => {
     res.render('users/register', { title: 'Register' })
 }

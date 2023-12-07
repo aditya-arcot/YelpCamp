@@ -4,6 +4,13 @@ const catchAsync = require('../utils/catchAsync')
 const { parseRedirectUrl } = require('../middleware')
 const users = require('../controllers/users')
 const router = express.Router({ mergeParams: true })
+const { checkAuthentication } = require('../middleware')
+
+router.route('/pageSize')
+    .post(
+        checkAuthentication,
+        catchAsync(users.updatePageSize)
+    )
 
 router.route('/register')
     .get(users.renderRegisterForm)

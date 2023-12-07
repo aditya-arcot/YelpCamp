@@ -1,0 +1,23 @@
+<form action="/pageSize" method="POST">
+    <div class="row g-2 mb-1 ps-1">
+        <div class="col-auto">
+            <label class="col-form-label col-form-label-sm" for="pageSizeSelect">
+                Campgrounds Per Page
+            </label>
+        </div>
+        <div class="col-auto">
+            <select class="form-select form-select-sm" id="pageSizeSelect" name="pageSize" required>
+                <option <%= pageSize === 10 ? 'selected' : '' %> value="10">10</option>
+                <option <%= pageSize === 25 ? 'selected' : '' %> value="25">25</option>
+                <option <%= pageSize === 50 ? 'selected' : '' %> value="50">50</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button id="pageSizeBtn" class="d-none btn btn-sm btn-warning">
+                Update
+            </button>
+        </div>
+    </div>
+</form>
+
+<script defer src="/js/selectPageSize.js"></script>

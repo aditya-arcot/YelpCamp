@@ -7,6 +7,9 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    pageSize: {
+        type: Number
     }
 })
 // adds username, salt, hash fields
