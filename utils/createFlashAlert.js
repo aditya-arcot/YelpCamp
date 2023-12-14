@@ -8,8 +8,7 @@ module.exports.createErrorFlashAlert = function (req, text) {
 }
 
 module.exports.reflashAlerts = function (req, res) {
-    for (let alert of res.locals.alerts)
-    {
+    for (let alert of res.locals.alerts) {
         req.flash('alerts', alert)
     }
 }

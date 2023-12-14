@@ -1,4 +1,5 @@
 body {
-    height: 100vh; /* fallback */
+    /* fallback */
+    height: 100vh;
     height: 100dvh;
 }
