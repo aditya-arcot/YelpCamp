@@ -6,6 +6,7 @@ const Review = require('../models/review')
 const locations = require('./locations')
 const { descriptors, places } = require('./seedHelpers')
 const { cloudinary } = require('../cloudinary')
+const { loremIpsum } = require('lorem-ipsum')
 
 const mongoPort = 27017
 const mongoDB = 'yelp-camp'
@@ -66,30 +67,42 @@ function shuffleArray(arr) {
     }
 }
 const seedCampgrounds = async (id, stock_images) => {
-    for (let location of locations) {
-        const descriptor = randElement(descriptors)
-        const place = randElement(places)
-        const title = `${descriptor} ${place}`
+    const campgrounds = []
+    for (let descriptor of descriptors) {
+        for (let place of places) {
+            const title = `${descriptor} ${place}`
 
-        const locationStr = `${location.city}, ${location.state}`
-        const coords = { 'lat': location.latitude, 'lng': location.longitude }
+            const location = randElement(locations)
+            const locationStr = `${location.city}, ${location.state}`
+            const coords = { 'lat': location.latitude, 'lng': location.longitude }
 
-        const price = (10 * Math.random() + 10).toFixed(2)
+            const price = (10 * Math.random() + 10).toFixed(2)
 
-        const shuffled_images = [...stock_images]
-        shuffleArray(shuffled_images)
-        const images = shuffled_images.slice(0, Math.floor(Math.random() * stock_images.length) + 1)
+            const shuffled_images = [...stock_images]
+            shuffleArray(shuffled_images)
+            const images = shuffled_images.slice(0, Math.floor(Math.random() * stock_images.length) + 1)
 
-        const c = new Campground({
-            author: id,
-            title,
-            location: locationStr,
-            price,
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic nobis repellendus doloremque perspiciatis, commodi aspernatur culpa, dignissimos aperiam officia accusantium autem dolorem, iure provident iusto odit quidem dolore consequatur. Accusamus.',
-            images,
-            coords
-        })
-        await c.save()
+            const description = loremIpsum({
+                count: 5,
+                units: 'sentences',
+                format: 'plain'
+            })
+
+            const c = new Campground({
+                author: id,
+                title,
+                location: locationStr,
+                price,
+                description,
+                images,
+                coords
+            })
+            campgrounds.push(c)
+        }
+    }
+    shuffleArray(campgrounds)
+    for (let campground of campgrounds) {
+        await campground.save()
     }
     console.log('done seeding campgrounds')
 }
