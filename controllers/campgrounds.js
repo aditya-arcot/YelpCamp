@@ -7,7 +7,13 @@ module.exports.index = async (req, res) => {
     let count
     let search = req.query.search
     if (search) {
-        count = await (Campground.countDocuments({ title: { $regex: new RegExp(search, 'i') } }))
+        count = await (Campground.countDocuments({
+            $or: [
+                { title: { $regex: new RegExp(search, 'i') } },
+                { location: { $regex: new RegExp(search, 'i') } },
+                { description: { $regex: new RegExp(search, 'i') } }
+            ]
+        }))
     } else {
         count = await Campground.countDocuments({})
     }
@@ -35,13 +41,18 @@ module.exports.index = async (req, res) => {
     const skip = (page - 1) * pageSize
     let campgrounds
     if (search) {
-        campgrounds = await Campground.find({ title: { $regex: new RegExp(search, 'i') } })
-            .skip(skip)
-            .limit(pageSize)
+        campgrounds = await Campground.find({
+            $or: [
+                { title: { $regex: new RegExp(search, 'i') } },
+                { location: { $regex: new RegExp(search, 'i') } },
+                { description: { $regex: new RegExp(search, 'i') } }
+            ]
+        }).sort({ createdAt: -1 })
     } else {
         campgrounds = await Campground.find()
             .skip(skip)
             .limit(pageSize)
+            .sort({ createdAt: -1 })
     }
 
     res.render('campgrounds/index',
