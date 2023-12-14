@@ -3,8 +3,13 @@
 <div class="col-lg-8 offset-lg-2">
     <h1>Campgrounds</h1>
 
+    <%- include('../partials/search') %>
+    <% if (count > 0) { %>
     <%- include('../partials/pageSize') %>
     <%- include('../partials/pagination') %>
+    <% } else { %>
+    <h3>No results!</h3>
+    <% } %>
 
     <% for (let campground of campgrounds) { %>
     <div class="card mb-3">
@@ -30,5 +35,7 @@
     </div>
     <% } %>
 
+    <% if (count > 0) { %>
     <%- include('../partials/pagination') %>
+    <% } %>
 </div>

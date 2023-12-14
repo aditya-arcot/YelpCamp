@@ -2,9 +2,11 @@ const User = require('../models/user')
 const { createSuccessFlashAlert, createErrorFlashAlert } = require('../utils/createFlashAlert')
 
 module.exports.updatePageSize = async (req, res) => {
+    const search = req.query.search
     const { pageSize } = req.body
     createSuccessFlashAlert(req, 'Updated default page size')
     await req.user.updateOne({ $set: { pageSize: pageSize } })
+    if (search) return res.redirect(`/campgrounds?search=${search}`)
     return res.redirect('/campgrounds')
 }
 

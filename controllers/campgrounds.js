@@ -1,30 +1,51 @@
 const Campground = require('../models/campground')
-const { createSuccessFlashAlert, reflashAlerts } = require('../utils/createFlashAlert')
+const { createSuccessFlashAlert, createErrorFlashAlert, reflashAlerts } = require('../utils/createFlashAlert')
 const getCoordsFromLocation = require('../utils/getCoordsFromLocation')
 const { findCampgroundById } = require('../utils/findMongooseObject')
 
 module.exports.index = async (req, res) => {
-    const count = await Campground.countDocuments({})
+    let count
+    let search = req.query.search
+    if (search) {
+        count = await (Campground.countDocuments({ title: { $regex: new RegExp(search, 'i') } }))
+    } else {
+        count = await Campground.countDocuments({})
+    }
+
+    if (search && count === 0) {
+        createErrorFlashAlert(req, 'No results for that query!')
+        return res.redirect('/campgrounds')
+    }
+
     const pageSize = res.locals.currentUser?.pageSize || 10
     const maxPage = Math.max(Math.ceil(count / pageSize), 1)
 
     let page = parseInt(req.query.page)
     if (!page || page < 1) {
         reflashAlerts(req, res)
+        if (search) return res.redirect(`/campgrounds?page=1&search=${search}`)
         return res.redirect('/campgrounds?page=1')
     }
-    if (page > maxPage) {
+    else if (page > maxPage) {
         reflashAlerts(req, res)
+        if (search) return res.redirect(`/campgrounds?page=${maxPage}&search=${search}`)
         return res.redirect(`/campgrounds?page=${maxPage}`)
     }
 
     const skip = (page - 1) * pageSize
-    const campgrounds = await Campground.find({})
-        .skip(skip)
-        .limit(pageSize)
+    let campgrounds
+    if (search) {
+        campgrounds = await Campground.find({ title: { $regex: new RegExp(search, 'i') } })
+            .skip(skip)
+            .limit(pageSize)
+    } else {
+        campgrounds = await Campground.find()
+            .skip(skip)
+            .limit(pageSize)
+    }
 
     res.render('campgrounds/index',
-        { title: 'Campgrounds', campgrounds, page, maxPage, pageSize, skip, count })
+        { title: 'Campgrounds', campgrounds, page, maxPage, pageSize, skip, count, search })
 }
 
 module.exports.map = async (req, res) => {
