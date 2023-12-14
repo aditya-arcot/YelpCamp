@@ -10,10 +10,11 @@
                 <option <%= pageSize === 10 ? 'selected' : '' %> value="10">10</option>
                 <option <%= pageSize === 25 ? 'selected' : '' %> value="25">25</option>
                 <option <%= pageSize === 50 ? 'selected' : '' %> value="50">50</option>
+                <option <%= pageSize === 100 ? 'selected' : '' %> value="100">100</option>
             </select>
         </div>
         <div class="col-auto">
-            <button id="pageSizeBtn" class="d-none btn btn-sm btn-warning">
+            <button id="pageSizeBtn" class="d-none btn btn-sm btn-success">
                 Update
             </button>
         </div>
