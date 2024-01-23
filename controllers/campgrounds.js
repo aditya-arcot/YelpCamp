@@ -72,6 +72,11 @@ module.exports.renderNewForm = async (req, res) => {
 
 module.exports.createCampground = async (req, res) => {
     const campground = new Campground(req.body.campground)
+    const duplicateCampground = await Campground.findOne({ 'title': req.body.campground.title })
+    if (duplicateCampground) {
+        createErrorFlashAlert(req, 'A campground with that title already exists!')
+        return res.redirect('/campgrounds/new')
+    }
     campground.author = req.user._id
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     const coords = await getCoordsFromLocation(req.body.campground.location)

@@ -65,7 +65,7 @@ const scriptSrcUrls = [
 const styleSrcUrls = [
     'https://cdn.jsdelivr.net',
     'https://api.mqcdn.com',
-    'https://unpkg.com',
+    'https://unpkg.com'
 ]
 const connectSrcUrls = [
     'http://www.mapquestapi.com',
