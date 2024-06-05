@@ -98,6 +98,7 @@ app.use(session(sessionConfig))
 app.use(flash())
 app.use(helmet())
 app.use(
+    /* eslint-disable quotes */
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: [],
@@ -112,6 +113,7 @@ app.use(
             manifestSrc: ["'self'"],
         },
     })
+    /* eslint-enable quotes */
 )
 app.use(passport.initialize())
 app.use(passport.session())
