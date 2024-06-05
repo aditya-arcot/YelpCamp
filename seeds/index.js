@@ -16,30 +16,28 @@ if (process.env.NODE_ENV === 'production' && process.env.MONGO_URL) {
 }
 
 const populateDefaultImages = async (stockImages) => {
-    const resp = await cloudinary.api.resources(
-        {
-            type: 'upload',
-            prefix: 'YelpCamp/default/'
-        })
+    const resp = await cloudinary.api.resources({
+        type: 'upload',
+        prefix: 'YelpCamp/default/',
+    })
     const resources = resp.resources
     if (resources) {
-        resources.forEach(img => {
+        resources.forEach((img) => {
             stockImages.push({
                 url: img.secure_url,
-                filename: img.public_id
+                filename: img.public_id,
             })
         })
-    }
-    else {
+    } else {
         throw Error('no default images found')
     }
     console.log('done populating images')
 }
 
-const connectToMongo = async url => {
+const connectToMongo = async (url) => {
     console.log(`mongo url - ${url}`)
     await mongoose.connect(url, {
-        serverSelectionTimeoutMS: 5000
+        serverSelectionTimeoutMS: 5000,
     })
     console.log('connected to mongo')
 }
@@ -48,22 +46,28 @@ const deleteExisting = async () => {
     await Review.deleteMany({})
     await User.deleteMany({})
     await Campground.deleteMany({})
-    const custom_images_prefix = process.env.NODE_ENV === 'production' ? 'YelpCamp/custom/prod' : 'YelpCamp/custom/nonprod'
+    const custom_images_prefix =
+        process.env.NODE_ENV === 'production'
+            ? 'YelpCamp/custom/prod'
+            : 'YelpCamp/custom/nonprod'
     await cloudinary.api.delete_resources_by_prefix(custom_images_prefix)
     console.log('done deleting from mongo, cloudinary')
 }
 
 const seedUser = async () => {
-    const admin = await User.register(new User({ username: 'admin', email: 'admin@admin' }), process.env.MONGO_ADMIN_PASSWORD)
+    const admin = await User.register(
+        new User({ username: 'admin', email: 'admin@admin' }),
+        process.env.MONGO_ADMIN_PASSWORD
+    )
     console.log('done seeding user')
     return admin._id
 }
 
-const randElement = array => array[Math.floor(Math.random() * array.length)]
+const randElement = (array) => array[Math.floor(Math.random() * array.length)]
 function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]]
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[arr[i], arr[j]] = [arr[j], arr[i]]
     }
 }
 const seedCampgrounds = async (id, stock_images) => {
@@ -74,18 +78,21 @@ const seedCampgrounds = async (id, stock_images) => {
 
             const location = randElement(locations)
             const locationStr = `${location.city}, ${location.state}`
-            const coords = { 'lat': location.latitude, 'lng': location.longitude }
+            const coords = { lat: location.latitude, lng: location.longitude }
 
             const price = (10 * Math.random() + 10).toFixed(2)
 
             const shuffled_images = [...stock_images]
             shuffleArray(shuffled_images)
-            const images = shuffled_images.slice(0, Math.floor(Math.random() * stock_images.length) + 1)
+            const images = shuffled_images.slice(
+                0,
+                Math.floor(Math.random() * stock_images.length) + 1
+            )
 
             const description = loremIpsum({
                 count: 5,
                 units: 'sentences',
-                format: 'plain'
+                format: 'plain',
             })
 
             const c = new Campground({
@@ -95,7 +102,7 @@ const seedCampgrounds = async (id, stock_images) => {
                 price,
                 description,
                 images,
-                coords
+                coords,
             })
             campgrounds.push(c)
         }
@@ -114,5 +121,4 @@ populateDefaultImages(stockImages)
     .then(() => seedUser())
     .then((id) => seedCampgrounds(id, stockImages))
     .then(() => mongoose.connection.close())
-    .catch(ex => console.log(ex))
-
+    .catch((ex) => console.log(ex))

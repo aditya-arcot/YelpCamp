@@ -4,19 +4,25 @@ const { Schema } = mongoose
 
 const imageSchema = new Schema({
     url: String,
-    filename: String
+    filename: String,
 })
 imageSchema.virtual('default').get(function () {
-    return this.url.replace('/image/upload', '/image/upload/w_2000,ar_1.5,q_auto,f_auto')
+    return this.url.replace(
+        '/image/upload',
+        '/image/upload/w_2000,ar_1.5,q_auto,f_auto'
+    )
 })
 imageSchema.virtual('thumbnail').get(function () {
-    return this.url.replace('/image/upload', '/image/upload/w_250,ar_1.5,q_auto,f_auto')
+    return this.url.replace(
+        '/image/upload',
+        '/image/upload/w_250,ar_1.5,q_auto,f_auto'
+    )
 })
 
 const campgroundSchema = new Schema({
     title: {
         type: String,
-        unique: true
+        unique: true,
     },
     location: String,
     price: Number,
@@ -24,18 +30,18 @@ const campgroundSchema = new Schema({
     images: [imageSchema],
     author: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
     },
     reviews: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Review'
-        }
+            ref: 'Review',
+        },
     ],
     coords: {
         lat: Number,
-        lng: Number
-    }
+        lng: Number,
+    },
 })
 
 campgroundSchema.post('findOneAndDelete', async function (campground) {

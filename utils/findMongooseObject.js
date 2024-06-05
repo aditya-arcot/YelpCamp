@@ -9,12 +9,11 @@ module.exports.findCampgroundById = async (req, res, id) => {
             .populate({
                 path: 'reviews',
                 populate: {
-                    path: 'author'
-                }
+                    path: 'author',
+                },
             })
             .populate('author')
-    }
-    catch (err) {
+    } catch (err) {
         createErrorFlashAlert(req, 'Cannot find that campground!')
         return res.redirect('/campgrounds')
     }
@@ -29,8 +28,7 @@ module.exports.findReviewById = async (req, res, id) => {
     let review
     try {
         review = await Review.findById(id)
-    }
-    catch (err) {
+    } catch (err) {
         createErrorFlashAlert(req, 'Cannot find that review!')
         return res.redirect('/campgrounds')
     }

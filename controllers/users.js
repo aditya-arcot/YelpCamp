@@ -1,5 +1,8 @@
 const User = require('../models/user')
-const { createSuccessFlashAlert, createErrorFlashAlert } = require('../utils/createFlashAlert')
+const {
+    createSuccessFlashAlert,
+    createErrorFlashAlert,
+} = require('../utils/createFlashAlert')
 
 module.exports.updatePageSize = async (req, res) => {
     const search = req.query.search
@@ -19,7 +22,7 @@ module.exports.register = async (req, res, next) => {
         const { email, username, password } = req.body
         const user = new User({ email, username })
         const registeredUser = await User.register(user, password)
-        req.login(registeredUser, err => {
+        req.login(registeredUser, (err) => {
             if (err) return next(err)
             createSuccessFlashAlert(req, 'Welcome to Yelp Camp!')
             return res.redirect('/campgrounds')

@@ -6,8 +6,8 @@ const reviewSchema = new Schema({
     body: String,
     author: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
-    }
+        ref: 'User',
+    },
 })
 
 module.exports = mongoose.model('Review', reviewSchema)

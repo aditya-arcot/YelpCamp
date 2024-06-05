@@ -6,22 +6,23 @@ const users = require('../controllers/users')
 const router = express.Router({ mergeParams: true })
 const { checkAuthentication } = require('../middleware')
 
-router.route('/pageSize')
-    .post(
-        checkAuthentication,
-        catchAsync(users.updatePageSize)
-    )
+router
+    .route('/pageSize')
+    .post(checkAuthentication, catchAsync(users.updatePageSize))
 
-router.route('/register')
+router
+    .route('/register')
     .get(users.renderRegisterForm)
     .post(catchAsync(users.register))
 
-router.route('/login')
+router
+    .route('/login')
     .get(users.renderLoginForm)
-    .post(parseRedirectUrl,
+    .post(
+        parseRedirectUrl,
         passport.authenticate('local', {
             failureFlash: true,
-            failureRedirect: '/login'
+            failureRedirect: '/login',
         }),
         catchAsync(users.login)
     )

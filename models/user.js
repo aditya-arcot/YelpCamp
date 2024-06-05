@@ -6,11 +6,11 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     pageSize: {
-        type: Number
-    }
+        type: Number,
+    },
 })
 // adds username, salt, hash fields
 userSchema.plugin(passportLocalMongoose)

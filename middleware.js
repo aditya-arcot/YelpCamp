@@ -1,7 +1,10 @@
 const { createErrorFlashAlert } = require('./utils/createFlashAlert')
 const ExpressError = require('./utils/ExpressError')
 const { campgroundSchema, reviewSchema } = require('./schemas')
-const { findCampgroundById, findReviewById } = require('./utils/findMongooseObject')
+const {
+    findCampgroundById,
+    findReviewById,
+} = require('./utils/findMongooseObject')
 
 module.exports.checkAuthentication = (req, res, next) => {
     if (req.isAuthenticated()) return next()
@@ -26,7 +29,7 @@ module.exports.checkCampgroundAuthorization = async (req, res, next) => {
 module.exports.validateCampground = (req, res, next) => {
     const { error } = campgroundSchema.validate(req.body)
     if (!error) return next()
-    const msg = error.details.map(el => el.message).join(',')
+    const msg = error.details.map((el) => el.message).join(',')
     throw new ExpressError(msg, 400)
 }
 
@@ -44,7 +47,7 @@ module.exports.checkReviewAuthorization = async (req, res, next) => {
 module.exports.validateReview = (req, res, next) => {
     const { error } = reviewSchema.validate(req.body)
     if (!error) return next()
-    const msg = error.details.map(el => el.message).join(',')
+    const msg = error.details.map((el) => el.message).join(',')
     throw new ExpressError(msg, 400)
 }
 

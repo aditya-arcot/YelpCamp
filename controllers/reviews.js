@@ -1,6 +1,9 @@
 const Review = require('../models/review')
 const { createSuccessFlashAlert } = require('../utils/createFlashAlert')
-const { findCampgroundById, findReviewById } = require('../utils/findMongooseObject')
+const {
+    findCampgroundById,
+    findReviewById,
+} = require('../utils/findMongooseObject')
 
 module.exports.createReview = async (req, res) => {
     const { id } = req.params

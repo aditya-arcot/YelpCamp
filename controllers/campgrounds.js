@@ -1,5 +1,9 @@
 const Campground = require('../models/campground')
-const { createSuccessFlashAlert, createErrorFlashAlert, reflashAlerts } = require('../utils/createFlashAlert')
+const {
+    createSuccessFlashAlert,
+    createErrorFlashAlert,
+    reflashAlerts,
+} = require('../utils/createFlashAlert')
 const getCoordsFromLocation = require('../utils/getCoordsFromLocation')
 const { findCampgroundById } = require('../utils/findMongooseObject')
 
@@ -7,13 +11,13 @@ module.exports.index = async (req, res) => {
     let count
     let search = req.query.search
     if (search) {
-        count = await (Campground.countDocuments({
+        count = await Campground.countDocuments({
             $or: [
                 { title: { $regex: new RegExp(search, 'i') } },
                 { location: { $regex: new RegExp(search, 'i') } },
-                { description: { $regex: new RegExp(search, 'i') } }
-            ]
-        }))
+                { description: { $regex: new RegExp(search, 'i') } },
+            ],
+        })
     } else {
         count = await Campground.countDocuments({})
     }
@@ -31,10 +35,10 @@ module.exports.index = async (req, res) => {
         reflashAlerts(req, res)
         if (search) return res.redirect(`/campgrounds?page=1&search=${search}`)
         return res.redirect('/campgrounds?page=1')
-    }
-    else if (page > maxPage) {
+    } else if (page > maxPage) {
         reflashAlerts(req, res)
-        if (search) return res.redirect(`/campgrounds?page=${maxPage}&search=${search}`)
+        if (search)
+            return res.redirect(`/campgrounds?page=${maxPage}&search=${search}`)
         return res.redirect(`/campgrounds?page=${maxPage}`)
     }
 
@@ -45,8 +49,8 @@ module.exports.index = async (req, res) => {
             $or: [
                 { title: { $regex: new RegExp(search, 'i') } },
                 { location: { $regex: new RegExp(search, 'i') } },
-                { description: { $regex: new RegExp(search, 'i') } }
-            ]
+                { description: { $regex: new RegExp(search, 'i') } },
+            ],
         }).sort({ createdAt: -1 })
     } else {
         campgrounds = await Campground.find()
@@ -55,30 +59,44 @@ module.exports.index = async (req, res) => {
             .sort({ createdAt: -1 })
     }
 
-    res.render('campgrounds/index',
-        { title: 'Campgrounds', campgrounds, page, maxPage, pageSize, skip, count, search })
+    res.render('campgrounds/index', {
+        title: 'Campgrounds',
+        campgrounds,
+        page,
+        maxPage,
+        pageSize,
+        skip,
+        count,
+        search,
+    })
 }
 
 module.exports.map = async (req, res) => {
     const campgrounds = await Campground.find({})
-    res.render('campgrounds/map',
-        { title: 'Cluster Map', campgrounds })
+    res.render('campgrounds/map', { title: 'Cluster Map', campgrounds })
 }
 
 module.exports.renderNewForm = async (req, res) => {
-    res.render('campgrounds/new',
-        { title: 'New Campground' })
+    res.render('campgrounds/new', { title: 'New Campground' })
 }
 
 module.exports.createCampground = async (req, res) => {
     const campground = new Campground(req.body.campground)
-    const duplicateCampground = await Campground.findOne({ 'title': req.body.campground.title })
+    const duplicateCampground = await Campground.findOne({
+        title: req.body.campground.title,
+    })
     if (duplicateCampground) {
-        createErrorFlashAlert(req, 'A campground with that title already exists!')
+        createErrorFlashAlert(
+            req,
+            'A campground with that title already exists!'
+        )
         return res.redirect('/campgrounds/new')
     }
     campground.author = req.user._id
-    campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
+    campground.images = req.files.map((f) => ({
+        url: f.path,
+        filename: f.filename,
+    }))
     const coords = await getCoordsFromLocation(req.body.campground.location)
     if (coords) {
         campground.coords = coords
@@ -94,8 +112,11 @@ module.exports.showCampground = async (req, res) => {
     if (!campground) {
         return
     }
-    res.render('campgrounds/show',
-        { title: 'Campground Details', campground, redirect_url: req.originalUrl })
+    res.render('campgrounds/show', {
+        title: 'Campground Details',
+        campground,
+        redirect_url: req.originalUrl,
+    })
 }
 
 module.exports.renderEditForm = async (req, res) => {
@@ -104,8 +125,7 @@ module.exports.renderEditForm = async (req, res) => {
     if (!campground) {
         return
     }
-    res.render('campgrounds/edit',
-        { title: 'Edit Campground', campground })
+    res.render('campgrounds/edit', { title: 'Edit Campground', campground })
 }
 
 module.exports.updateCampground = async (req, res) => {
@@ -116,11 +136,16 @@ module.exports.updateCampground = async (req, res) => {
     }
     const updates = { ...req.body.campground }
     if (req.files) {
-        const new_images = req.files.map(f => ({ url: f.path, filename: f.filename }))
+        const new_images = req.files.map((f) => ({
+            url: f.path,
+            filename: f.filename,
+        }))
         updates.images = campground.images.concat(new_images)
     }
     if (req.body.deleteImages) {
-        updates.images = campground.images.filter(image => !req.body.deleteImages.includes(image.filename))
+        updates.images = campground.images.filter(
+            (image) => !req.body.deleteImages.includes(image.filename)
+        )
     }
     const coords = await getCoordsFromLocation(req.body.campground.location)
     updates.coords = coords ? coords : {}

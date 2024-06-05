@@ -1,17 +1,25 @@
 const express = require('express')
 const catchAsync = require('../utils/catchAsync')
-const { checkAuthentication, checkReviewAuthorization, validateReview } = require('../middleware')
+const {
+    checkAuthentication,
+    checkReviewAuthorization,
+    validateReview,
+} = require('../middleware')
 const reviews = require('../controllers/reviews')
 const router = express.Router({ mergeParams: true })
 
-router.post('/',
+router.post(
+    '/',
     checkAuthentication,
     validateReview,
-    catchAsync(reviews.createReview))
+    catchAsync(reviews.createReview)
+)
 
-router.delete('/:reviewId',
+router.delete(
+    '/:reviewId',
     checkAuthentication,
     checkReviewAuthorization,
-    catchAsync(reviews.deleteReview))
+    catchAsync(reviews.deleteReview)
+)
 
 module.exports = router

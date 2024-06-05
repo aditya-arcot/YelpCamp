@@ -5,10 +5,10 @@
 }
 
 .rating.selected svg path {
-    fill: #F1F500;
+    fill: #f1f500;
     stroke: black;
 }
 
 .rating.warning svg path {
-    stroke: red
+    stroke: red;
 }

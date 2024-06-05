@@ -1,11 +1,11 @@
 const forms = document.querySelectorAll('.validation-form')
-forms.forEach(form => {
-    form.addEventListener('submit', event => {
+forms.forEach((form) => {
+    form.addEventListener('submit', (event) => {
         const ratings = document.querySelectorAll('.rating')
         if (ratings.length) {
             const selected = document.querySelectorAll('.rating.selected')
             if (!selected.length) {
-                ratings.forEach(rating => {
+                ratings.forEach((rating) => {
                     rating.classList.add('warning')
                 })
             }
@@ -19,9 +19,9 @@ forms.forEach(form => {
 })
 
 const all_ratings = document.querySelectorAll('.rating')
-all_ratings.forEach(rating => {
+all_ratings.forEach((rating) => {
     rating.addEventListener('click', () => {
-        all_ratings.forEach(rating => {
+        all_ratings.forEach((rating) => {
             rating.classList.remove('warning')
         })
 
