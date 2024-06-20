@@ -139,8 +139,8 @@ app.all('*', (req, res, next) => {
 // error handler
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-    const { status = 500 } = err
-    res.status(status).render('error', { title: 'Error', err })
+    const { statusCode = 500 } = err
+    res.status(statusCode).render('error', { title: 'Error', err })
 })
 
 // start
