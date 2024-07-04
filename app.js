@@ -1,4 +1,3 @@
-require('dotenv').config()
 const mongoose = require('mongoose')
 const express = require('express')
 const path = require('path')
@@ -18,14 +17,10 @@ const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
 const User = require('./models/user')
 const { createErrorFlashAlert } = require('./utils/createFlashAlert')
+const { env } = require('process')
 
 // DATABASE
-const mongoPort = 27017
-const mongoDB = 'yelp-camp'
-let dbUrl = `mongodb://localhost:${mongoPort}/${mongoDB}`
-if (process.env.NODE_ENV === 'production' && process.env.MONGO_URL) {
-    dbUrl = process.env.MONGO_URL
-}
+const dbUrl = env.MONGO_URL
 const connectToMongo = async (url) => {
     console.log(`mongo url - ${url}`)
     await mongoose.connect(url, {
@@ -34,11 +29,10 @@ const connectToMongo = async (url) => {
     console.log('connected to mongo')
 }
 
-// WEB APP
+// HTTPS SERVER
 const app = express()
-const webPort = process.env.PORT || 3000
 const weekTime = 1000 * 60 * 60 * 24 * 7
-const secret = process.env.SESSIONS_SECRET || 'secretplaceholder'
+const secret = env.SESSIONS_SECRET
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
@@ -52,7 +46,7 @@ const sessionConfig = {
     saveUninitialized: true,
     cookie: {
         expires: Date.now() + weekTime,
-        // secure: true, // HTTPS
+        secure: env.NODE_ENV === 'production',
         maxAge: weekTime,
         httpOnly: true,
     },
@@ -77,7 +71,7 @@ const imgSrcUrls = [
     'https://images.unsplash.com/',
     'https://assets.mapquestapi.com',
     'https://a.tiles.mapquest.com',
-    `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`,
+    `https://res.cloudinary.com/${env.CLOUDINARY_CLOUD_NAME}/`,
 ]
 const fontSrcUrls = ['https://api.mqcdn.com']
 
@@ -85,6 +79,9 @@ const fontSrcUrls = ['https://api.mqcdn.com']
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+if (env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1)
+}
 
 // middleware
 app.use(express.urlencoded({ extended: true }))
@@ -149,13 +146,22 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { title: 'Error', err })
 })
 
+// HTTP SERVER
+const httpApp = express()
+httpApp.use((req, res) => {
+    const url = `https://${req.headers.host}${req.originalUrl}`
+    console.log(`redirecting http request to ${url}`)
+    return res.redirect(url)
+})
+
 // start
 connectToMongo(dbUrl)
-    .then(() =>
-        app.listen(webPort, () => {
-            console.log(`server started on port ${webPort}`)
+    .then(() => {
+        const port = 3000
+        app.listen(port, () => {
+            console.log(`http server started on port ${port}`)
         })
-    )
+    })
     .catch((ex) => {
         console.log(ex)
         process.exit(1)

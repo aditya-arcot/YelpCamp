@@ -4,13 +4,15 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "start": "node app.js",
+        "start": "dotenvx run -f .env.dev -- node app.js",
+        "start:deploy": "dotenvx run -- node app.js",
         "prettier": "npx prettier --write .",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@dotenvx/dotenvx": "^1.5.0",
         "axios": "^1.5.1",
         "cloudinary": "^1.41.0",
         "connect-flash": "^0.1.1",

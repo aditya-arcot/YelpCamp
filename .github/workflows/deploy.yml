@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+on:
+    push:
+        branches:
+            - master
+
+env:
+    REPO: $(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')
+    IMAGE_TAG: $(date +%Y-%m-%d).${{ github.run_number }}-${{ github.run_attempt }}-${{ github.run_id }}
+
+jobs:
+    deploy:
+        name: Deploy
+        runs-on: mbp-13
+        environment: prod
+        steps:
+            - name: unlock keychain
+              run: security unlock-keychain -p ${{ secrets.KEYCHAIN_PASSWORD }} login.keychain
+
+            - name: checkout
+              uses: actions/checkout@v3
+
+            - name: create .env
+              run: |
+                  echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
+                  echo "CLOUDINARY_KEY=${{ secrets.CLOUDINARY_KEY }}" >> .env
+                  echo "CLOUDINARY_SECRET=${{ secrets.CLOUDINARY_SECRET }}" >> .env
+                  echo "MAPQUEST_KEY=${{ secrets.MAPQUEST_KEY }}" >> .env
+                  echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
+                  echo "NODE_ENV=production" >> .env
+                  echo "SESSIONS_SECRET=${{ secrets.SESSIONS_SECRET }}" >> .env
+            
+            - name: copy files
+              run: |
+                mkdir stage
+                cp -r .env *.js Dockerfile package*.json cloudinary controllers models public routes utils views stage/
+
+            - name: build, push docker image
+              run: |
+                  cd stage/
+                  IMAGE=${{ secrets.DOCKER_REGISTRY }}/${{ env.REPO }}:${{ env.IMAGE_TAG }}
+                  docker build -t $IMAGE .
+                  docker push $IMAGE
+                  echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
+
+            - name: start docker
+              run: |
+                  REPO=${{ env.REPO }} \
+                  IMAGE=${{ env.IMAGE }} \
+                  docker-compose up -d
