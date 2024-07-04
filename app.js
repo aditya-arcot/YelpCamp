@@ -17,6 +17,7 @@ const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
 const User = require('./models/user')
+const { createErrorFlashAlert } = require('./utils/createFlashAlert')
 
 // DATABASE
 const mongoPort = 27017
@@ -118,6 +119,11 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 app.use((req, res, next) => {
+    // passport login error
+    const passportFlashErrors = req.flash('error')
+    if (passportFlashErrors && passportFlashErrors.length) {
+        createErrorFlashAlert(req, passportFlashErrors[0])
+    }
     res.locals.alerts = req.flash('alerts')
     res.locals.currentUser = req.user
     next()
