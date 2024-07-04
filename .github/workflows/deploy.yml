@@ -20,6 +20,12 @@ jobs:
             - name: checkout
               uses: actions/checkout@v3
 
+            - name: configure nginx
+              run: |
+                  set -e
+                  cp yelpcamp.conf /usr/local/etc/nginx/servers/
+                  nginx -t
+
             - name: create .env
               run: |
                   echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
@@ -43,8 +49,9 @@ jobs:
                   docker push $IMAGE
                   echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
 
-            - name: start docker
+            - name: start docker, restart nginx
               run: |
                   REPO=${{ env.REPO }} \
                   IMAGE=${{ env.IMAGE }} \
                   docker-compose up -d
+                  brew services restart nginx
