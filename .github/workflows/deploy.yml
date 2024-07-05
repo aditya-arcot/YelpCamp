@@ -22,7 +22,6 @@ jobs:
 
             - name: configure nginx
               run: |
-                  set -e
                   sed -e "s/{PORT}/${{ secrets.PORT }}/g" yelpcamp.conf > yelpcamp.conf.tmp
                   mv yelpcamp.conf.tmp yelpcamp.conf
                   cp yelpcamp.conf /usr/local/etc/nginx/servers/
