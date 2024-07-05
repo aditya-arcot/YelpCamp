@@ -53,5 +53,5 @@ jobs:
               run: |
                   REPO=${{ env.REPO }} \
                   IMAGE=${{ env.IMAGE }} \
-                  docker-compose up -d
+                  docker compose up -d
                   brew services restart nginx
