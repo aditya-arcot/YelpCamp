@@ -23,6 +23,7 @@ jobs:
             - name: configure nginx
               run: |
                   set -e
+                  sed "s/{PORT}/${{ secrets.PORT }}/g" yelpcamp.conf.template > yelpcamp.conf
                   cp yelpcamp.conf /usr/local/etc/nginx/servers/
                   nginx -t
 
@@ -53,5 +54,6 @@ jobs:
               run: |
                   REPO=${{ env.REPO }} \
                   IMAGE=${{ env.IMAGE }} \
+                  PORT=${{ secrets.PORT }} \
                   docker compose up -d
                   brew services restart nginx
