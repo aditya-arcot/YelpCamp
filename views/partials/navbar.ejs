@@ -16,8 +16,8 @@
             <nav class="navbar-nav ms-auto">
                 <% if (!currentUser) {%>
                 <a href="/login<%= typeof redirect_url !== 'undefined' ? `?redirect_url=${redirect_url}` : '' %>"
-                    class="nav-link">Login</a>
-                <a href="/register" class="nav-link">Register</a>
+                    class="nav-link <%= currentPath === '/login' ? 'active' : '' %>">Login</a>
+                <a href="/register" class="nav-link <%= currentPath === '/register' ? 'active' : '' %>">Register</a>
                 <% } else { %>
                 <a href="/logout" class="nav-link">Logout</a>
                 <% } %>
