@@ -5,15 +5,15 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="navbar-nav">
+            <nav class="navbar-nav">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/campgrounds">Campgrounds</a>
-                <a class="nav-link" href="/campgrounds/map">Map</a>
+                <a class="nav-link <%= currentPath === '/campgrounds' ? 'active' : '' %>" href="/campgrounds">Campgrounds</a>
+                <a class="nav-link <%= currentPath === '/campgrounds/map' ? 'active' : '' %>" href="/campgrounds/map">Map</a>
                 <% if (currentUser) {%>
-                <a class="nav-link" href="/campgrounds/new">New Campground</a>
+                <a class="nav-link <%= currentPath === '/campgrounds/new' ? 'active' : '' %>" href="/campgrounds/new">New Campground</a>
                 <% } %>
-            </div>
-            <div class="navbar-nav ms-auto">
+            </nav>
+            <nav class="navbar-nav ms-auto">
                 <% if (!currentUser) {%>
                 <a href="/login<%= typeof redirect_url !== 'undefined' ? `?redirect_url=${redirect_url}` : '' %>"
                     class="nav-link">Login</a>
@@ -21,7 +21,7 @@
                 <% } else { %>
                 <a href="/logout" class="nav-link">Logout</a>
                 <% } %>
-            </div>
+            </nav>
         </div>
     </div>
 </nav>

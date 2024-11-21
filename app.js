@@ -123,6 +123,7 @@ app.use((req, res, next) => {
     }
     res.locals.alerts = req.flash('alerts')
     res.locals.currentUser = req.user
+    res.locals.currentPath = req.path
     next()
 })
 
