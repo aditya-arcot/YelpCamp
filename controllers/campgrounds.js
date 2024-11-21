@@ -108,6 +108,7 @@ module.exports.createCampground = async (req, res) => {
 
 module.exports.showCampground = async (req, res) => {
     const { id } = req.params
+    res.locals.currentPath = '/campgrounds'
     const campground = await findCampgroundById(req, res, id)
     if (!campground) {
         return
