@@ -36,11 +36,11 @@ jobs:
                   echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
                   echo "NODE_ENV=production" >> .env
                   echo "SESSIONS_SECRET=${{ secrets.SESSIONS_SECRET }}" >> .env
-            
+
             - name: copy files
               run: |
-                mkdir stage
-                cp -r .env *.js Dockerfile package*.json cloudinary controllers models public routes utils views stage/
+                  mkdir stage
+                  cp -r .env *.js Dockerfile package*.json cloudinary controllers models public routes utils views stage/
 
             - name: build, push docker image
               run: |

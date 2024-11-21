@@ -1,5 +1,0 @@
-.DS_Store
-node_modules/
-.env
-seeds/locations.js
-seeds/seedHelpers.js
