@@ -28,7 +28,7 @@
         "joi": "^17.13.3",
         "lorem-ipsum": "^2.0.8",
         "method-override": "^3.0.0",
-        "mongoose": "^8.9.4",
+        "mongoose": "^8.9.5",
         "multer": "^1.4.5-lts.1",
         "multer-storage-cloudinary": "^4.0.0",
         "nodemon": "^3.1.9",
