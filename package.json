@@ -13,7 +13,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@dotenvx/dotenvx": "^1.33.0",
+        "@dotenvx/dotenvx": "^1.36.0",
         "axios": "^1.7.9",
         "cloudinary": "^1.41.0",
         "connect-flash": "^0.1.1",
@@ -28,7 +28,7 @@
         "joi": "^17.13.3",
         "lorem-ipsum": "^2.0.8",
         "method-override": "^3.0.0",
-        "mongoose": "^8.9.5",
+        "mongoose": "^8.10.1",
         "multer": "^1.4.5-lts.1",
         "multer-storage-cloudinary": "^4.0.0",
         "nodemon": "^3.1.9",
@@ -39,10 +39,10 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.2.0",
-        "@eslint/js": "^9.18.0",
-        "eslint": "^9.18.0",
-        "globals": "^15.14.0",
-        "prettier": "^3.4.2",
+        "@eslint/js": "^9.20.0",
+        "eslint": "^9.20.1",
+        "globals": "^15.15.0",
+        "prettier": "^3.5.1",
         "prettier-plugin-organize-imports": "^4.1.0"
     }
 }
