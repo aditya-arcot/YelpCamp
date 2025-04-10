@@ -1,14 +1,14 @@
 {
     "name": "yelpcamp",
     "version": "1.0.0",
-    "main": "app.js",
     "private": true,
+    "main": "app.js",
     "scripts": {
-        "start": "dotenvx run -f .env.dev -- nodemon -e js,ejs,json app.js",
-        "start:deploy": "dotenvx run -- node app.js",
         "lint": "eslint --fix --max-warnings=0 .",
+        "prepare": "husky && sort-package-json",
         "prettier": "prettier --write .",
-        "prepare": "husky"
+        "start": "dotenvx run -f .env.dev -- nodemon -e js,ejs,json app.js",
+        "start:deploy": "dotenvx run -- node app.js"
     },
     "lint-staged": {
         "*": [
@@ -48,6 +48,7 @@
         "husky": "^9.1.7",
         "lint-staged": "^15.5.0",
         "npm-check-updates": "^17.1.18",
-        "prettier": "^3.5.3"
+        "prettier": "^3.5.3",
+        "sort-package-json": "^3.0.0"
     }
 }
