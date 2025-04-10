@@ -1,17 +1,14 @@
 {
     "name": "yelpcamp",
     "version": "1.0.0",
-    "description": "",
     "main": "app.js",
+    "private": true,
     "scripts": {
         "start": "dotenvx run -f .env.dev -- nodemon -e js,ejs,json app.js",
         "start:deploy": "dotenvx run -- node app.js",
-        "prettier": "npx prettier --write .",
-        "lint": "npx eslint --fix .",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "lint": "eslint --fix --max-warnings=0 .",
+        "prettier": "prettier --write ."
     },
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "@dotenvx/dotenvx": "^1.36.0",
         "axios": "^1.7.9",
@@ -38,9 +35,8 @@
         "sanitize-html": "^2.14.0"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.2.0",
-        "@eslint/js": "^9.20.0",
-        "eslint": "^9.20.1",
+        "@eslint/js": "^9.24.0",
+        "eslint": "^9.24.0",
         "globals": "^15.15.0",
         "prettier": "^3.5.1",
         "prettier-plugin-organize-imports": "^4.1.0"

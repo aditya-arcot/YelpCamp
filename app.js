@@ -96,7 +96,6 @@ app.use(session(sessionConfig))
 app.use(flash())
 app.use(helmet())
 app.use(
-    /* eslint-disable quotes */
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: [],
@@ -111,7 +110,6 @@ app.use(
             manifestSrc: ["'self'"],
         },
     })
-    /* eslint-enable quotes */
 )
 app.use(passport.initialize())
 app.use(passport.session())
@@ -135,14 +133,13 @@ passport.deserializeUser(User.deserializeUser())
 app.use('/', userRoutes)
 app.use('/campgrounds', campgroundRoutes)
 app.use('/campgrounds/:id/reviews', reviewRoutes)
-app.get('/', (req, res) => res.render('home'))
-app.all('*', (req, res, next) => {
+app.get('/', (_req, res) => res.render('home'))
+app.all('*', (_req, _res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
 
 // error handler
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
+app.use((err, _req, res, _next) => {
     const { statusCode = 500 } = err
     res.status(statusCode).render('error', { title: 'Error', err })
 })
