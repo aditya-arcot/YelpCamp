@@ -13,7 +13,7 @@ module.exports.updatePageSize = async (req, res) => {
     return res.redirect('/campgrounds')
 }
 
-module.exports.renderRegisterForm = (req, res) => {
+module.exports.renderRegisterForm = (_req, res) => {
     res.render('users/register', { title: 'Register' })
 }
 

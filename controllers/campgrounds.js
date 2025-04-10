@@ -71,12 +71,12 @@ module.exports.index = async (req, res) => {
     })
 }
 
-module.exports.map = async (req, res) => {
+module.exports.map = async (_req, res) => {
     const campgrounds = await Campground.find({})
     res.render('campgrounds/map', { title: 'Cluster Map', campgrounds })
 }
 
-module.exports.renderNewForm = async (req, res) => {
+module.exports.renderNewForm = async (_req, res) => {
     res.render('campgrounds/new', { title: 'New Campground' })
 }
 

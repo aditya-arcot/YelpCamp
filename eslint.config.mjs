@@ -14,10 +14,11 @@ export default defineConfig([
             'no-unused-vars': [
                 'error',
                 {
+                    args: 'all',
                     argsIgnorePattern: '^_',
                 },
-            ]
-        }
+            ],
+        },
     },
     {
         files: ['**/*.js'],

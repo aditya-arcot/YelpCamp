@@ -26,7 +26,7 @@ module.exports.checkCampgroundAuthorization = async (req, res, next) => {
     return res.redirect(`/campgrounds/${id}`)
 }
 
-module.exports.validateCampground = (req, res, next) => {
+module.exports.validateCampground = (req, _res, next) => {
     const { error } = campgroundSchema.validate(req.body)
     if (!error) return next()
     const msg = error.details.map((el) => el.message).join(',')
@@ -44,7 +44,7 @@ module.exports.checkReviewAuthorization = async (req, res, next) => {
     return res.redirect(`/campgrounds/${id}`)
 }
 
-module.exports.validateReview = (req, res, next) => {
+module.exports.validateReview = (req, _res, next) => {
     const { error } = reviewSchema.validate(req.body)
     if (!error) return next()
     const msg = error.details.map((el) => el.message).join(',')
