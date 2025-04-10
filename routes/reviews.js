@@ -1,11 +1,11 @@
 const express = require('express')
-const catchAsync = require('../utils/catchAsync')
+const reviews = require('../controllers/reviews')
 const {
     checkAuthentication,
     checkReviewAuthorization,
     validateReview,
 } = require('../middleware')
-const reviews = require('../controllers/reviews')
+const catchAsync = require('../utils/catchAsync')
 const router = express.Router({ mergeParams: true })
 
 router.post(

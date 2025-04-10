@@ -4,8 +4,8 @@ const {
     createErrorFlashAlert,
     reflashAlerts,
 } = require('../utils/createFlashAlert')
-const getCoordsFromLocation = require('../utils/getCoordsFromLocation')
 const { findCampgroundById } = require('../utils/findMongooseObject')
+const getCoordsFromLocation = require('../utils/getCoordsFromLocation')
 
 module.exports.index = async (req, res) => {
     let count

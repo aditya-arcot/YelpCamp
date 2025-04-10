@@ -1,10 +1,10 @@
 const express = require('express')
 const passport = require('passport')
-const catchAsync = require('../utils/catchAsync')
-const { parseRedirectUrl } = require('../middleware')
 const users = require('../controllers/users')
-const router = express.Router({ mergeParams: true })
+const { parseRedirectUrl } = require('../middleware')
 const { checkAuthentication } = require('../middleware')
+const catchAsync = require('../utils/catchAsync')
+const router = express.Router({ mergeParams: true })
 
 router
     .route('/pageSize')

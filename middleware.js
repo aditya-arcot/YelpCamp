@@ -1,6 +1,6 @@
+const { campgroundSchema, reviewSchema } = require('./schemas')
 const { createErrorFlashAlert } = require('./utils/createFlashAlert')
 const ExpressError = require('./utils/ExpressError')
-const { campgroundSchema, reviewSchema } = require('./schemas')
 const {
     findCampgroundById,
     findReviewById,

@@ -1,12 +1,12 @@
 require('dotenv').config()
+const { loremIpsum } = require('lorem-ipsum')
 const mongoose = require('mongoose')
+const { cloudinary } = require('../cloudinary')
 const Campground = require('../models/campground')
-const User = require('../models/user')
 const Review = require('../models/review')
+const User = require('../models/user')
 const locations = require('./locations')
 const { descriptors, places } = require('./seedHelpers')
-const { cloudinary } = require('../cloudinary')
-const { loremIpsum } = require('lorem-ipsum')
 
 const mongoPort = 27017
 const mongoDB = 'yelp-camp'
