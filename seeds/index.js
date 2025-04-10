@@ -1,4 +1,3 @@
-require('dotenv').config()
 const { loremIpsum } = require('lorem-ipsum')
 const mongoose = require('mongoose')
 const { cloudinary } = require('../cloudinary')
