@@ -1,0 +1,22 @@
+#!/bin/sh
+
+echo "Running pre-commit hook..."
+echo
+
+echo "Scanning for secrets in staged files..."
+ggshield secret scan pre-commit "$@"
+echo
+
+echo "Formatting and linting staged files..."
+lint-staged
+echo
+
+echo "Checking for dependency issues..."
+depcheck || exit 1
+echo
+
+echo "Checking for available updates..."
+ncu -e 2 || exit 1
+echo
+
+echo "Done running pre-commit hook"
