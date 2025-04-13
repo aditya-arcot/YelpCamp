@@ -5,7 +5,7 @@
     "main": "app.js",
     "scripts": {
         "lint": "eslint --fix --max-warnings=0 .",
-        "prepare": "husky && sort-package-json",
+        "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky && sort-package-json; fi",
         "prettier": "prettier --write .",
         "start": "dotenvx run -f .env.dev -- nodemon -e js,ejs,json app.js",
         "start:deploy": "dotenvx run -- node app.js"
