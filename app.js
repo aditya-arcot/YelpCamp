@@ -4,13 +4,13 @@ const flash = require('connect-flash')
 const MongoStore = require('connect-mongo')
 const ejsMate = require('ejs-mate')
 const express = require('express')
-const mongoSanitize = require('express-mongo-sanitize')
 const session = require('express-session')
 const helmet = require('helmet')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const { sanitize } = require('./middleware')
 const User = require('./models/user')
 const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
@@ -78,6 +78,7 @@ const fontSrcUrls = ['https://api.mqcdn.com']
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+app.set('query parser', 'extended')
 if (env.NODE_ENV === 'production') {
     app.set('trust proxy', 1)
 }
@@ -86,11 +87,6 @@ if (env.NODE_ENV === 'production') {
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(
-    mongoSanitize({
-        replaceWith: '_',
-    })
-)
 app.use(session(sessionConfig))
 app.use(flash())
 app.use(helmet())
@@ -123,6 +119,7 @@ app.use((req, res, next) => {
     res.locals.currentPath = req.path
     next()
 })
+app.use(sanitize)
 
 passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
@@ -133,7 +130,7 @@ app.use('/', userRoutes)
 app.use('/campgrounds', campgroundRoutes)
 app.use('/campgrounds/:id/reviews', reviewRoutes)
 app.get('/', (_req, res) => res.render('home'))
-app.all('*', (_req, _res, next) => {
+app.all('/*splat', (_req, _res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
 
@@ -141,14 +138,6 @@ app.all('*', (_req, _res, next) => {
 app.use((err, _req, res, _next) => {
     const { statusCode = 500 } = err
     res.status(statusCode).render('error', { title: 'Error', err })
-})
-
-// HTTP SERVER
-const httpApp = express()
-httpApp.use((req, res) => {
-    const url = `https://${req.headers.host}${req.originalUrl}`
-    console.log(`redirecting http request to ${url}`)
-    return res.redirect(url)
 })
 
 // start

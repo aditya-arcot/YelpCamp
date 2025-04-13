@@ -23,7 +23,7 @@
         "connect-flash": "^0.1.1",
         "connect-mongo": "^5.1.0",
         "ejs-mate": "^4.0.0",
-        "express": "^4.21.2",
+        "express": "^5.1.0",
         "express-mongo-sanitize": "^2.2.0",
         "express-session": "^1.18.1",
         "helmet": "^8.1.0",
@@ -46,7 +46,7 @@
         "eslint-plugin-import": "^2.31.0",
         "globals": "^16.0.0",
         "husky": "^9.1.7",
-        "lint-staged": "^15.5.0",
+        "lint-staged": "^15.5.1",
         "npm-check-updates": "^17.1.18",
         "prettier": "^3.5.3",
         "sort-package-json": "^3.0.0"
