@@ -37,6 +37,10 @@ const store = MongoStore.create({
     touchAfter: 24 * 60 * 60,
     crypto: { secret },
 })
+const cookieName =
+    env.NODE_ENV === 'production'
+        ? 'yelpcamp-session'
+        : `yelpcamp-${env.NODE_ENV}-session`
 const sessionConfig = {
     store,
     name: 'session',
@@ -44,6 +48,7 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: true,
     cookie: {
+        name: cookieName,
         expires: Date.now() + weekTime,
         secure: env.NODE_ENV === 'production',
         maxAge: weekTime,
