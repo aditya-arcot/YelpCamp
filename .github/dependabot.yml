@@ -7,13 +7,25 @@ updates:
       ignore:
           - dependency-name: 'cloudinary'
             update-types: ['version-update:semver-major']
+      groups:
+          dependencies:
+              patterns:
+                  - '*'
 
     - package-ecosystem: 'docker'
       directory: '/'
       schedule:
           interval: 'weekly'
+      groups:
+          docker:
+              patterns:
+                  - '*'
 
     - package-ecosystem: 'github-actions'
       directory: '/'
       schedule:
           interval: 'weekly'
+      groups:
+          github-actions:
+              patterns:
+                  - '*'
