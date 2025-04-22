@@ -40,9 +40,9 @@
         "sanitize-html": "^2.16.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.25.0",
+        "@eslint/js": "^9.25.1",
         "depcheck": "^1.4.7",
-        "eslint": "^9.25.0",
+        "eslint": "^9.25.1",
         "eslint-plugin-import": "^2.31.0",
         "globals": "^16.0.0",
         "husky": "^9.1.7",
