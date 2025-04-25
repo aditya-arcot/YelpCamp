@@ -5,8 +5,8 @@ on:
             - master
 
 concurrency:
-  group: deploy-${{ github.ref_name }}
-  cancel-in-progress: true
+    group: deploy-${{ github.ref_name }}
+    cancel-in-progress: true
 
 permissions:
     contents: read
