@@ -17,7 +17,7 @@
         ]
     },
     "dependencies": {
-        "@dotenvx/dotenvx": "^1.41.0",
+        "@dotenvx/dotenvx": "^1.43.0",
         "axios": "^1.9.0",
         "cloudinary": "^1.41.0",
         "connect-flash": "^0.1.1",
@@ -30,7 +30,7 @@
         "joi": "^17.13.3",
         "lorem-ipsum": "^2.0.8",
         "method-override": "^3.0.0",
-        "mongoose": "^8.14.0",
+        "mongoose": "^8.14.1",
         "multer": "^1.4.5-lts.2",
         "multer-storage-cloudinary": "^4.0.0",
         "nodemon": "^3.1.10",
@@ -40,15 +40,15 @@
         "sanitize-html": "^2.16.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.25.1",
+        "@eslint/js": "^9.26.0",
         "depcheck": "^1.4.7",
-        "eslint": "^9.25.1",
+        "eslint": "^9.26.0",
         "eslint-plugin-import": "^2.31.0",
         "globals": "^16.0.0",
         "husky": "^9.1.7",
         "lint-staged": "^15.5.1",
         "npm-check-updates": "^18.0.1",
         "prettier": "^3.5.3",
-        "sort-package-json": "^3.0.0"
+        "sort-package-json": "^3.2.0"
     }
 }
