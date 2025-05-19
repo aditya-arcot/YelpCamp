@@ -17,7 +17,7 @@
         ]
     },
     "dependencies": {
-        "@dotenvx/dotenvx": "^1.43.0",
+        "@dotenvx/dotenvx": "^1.44.0",
         "axios": "^1.9.0",
         "cloudinary": "^1.41.0",
         "connect-flash": "^0.1.1",
@@ -30,19 +30,19 @@
         "joi": "^17.13.3",
         "lorem-ipsum": "^2.0.8",
         "method-override": "^3.0.0",
-        "mongoose": "^8.14.2",
+        "mongoose": "^8.15.0",
         "multer": "^1.4.5-lts.2",
         "multer-storage-cloudinary": "^4.0.0",
         "nodemon": "^3.1.10",
         "passport": "^0.7.0",
         "passport-local": "^1.0.0",
         "passport-local-mongoose": "^8.0.0",
-        "sanitize-html": "^2.16.0"
+        "sanitize-html": "^2.17.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.26.0",
+        "@eslint/js": "^9.27.0",
         "depcheck": "^1.4.7",
-        "eslint": "^9.26.0",
+        "eslint": "^9.27.0",
         "eslint-plugin-import": "^2.31.0",
         "globals": "^16.1.0",
         "husky": "^9.1.7",
