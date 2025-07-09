@@ -17,7 +17,7 @@
         ]
     },
     "dependencies": {
-        "@dotenvx/dotenvx": "^1.45.2",
+        "@dotenvx/dotenvx": "^1.47.1",
         "axios": "^1.10.0",
         "cloudinary": "^1.41.0",
         "connect-flash": "^0.1.1",
@@ -30,7 +30,7 @@
         "joi": "^17.13.3",
         "lorem-ipsum": "^2.0.8",
         "method-override": "^3.0.0",
-        "mongoose": "^8.16.1",
+        "mongoose": "^8.16.2",
         "multer": "^2.0.1",
         "multer-storage-cloudinary": "^4.0.0",
         "nodemon": "^3.1.10",
