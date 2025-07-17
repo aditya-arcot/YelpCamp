@@ -27,13 +27,6 @@ jobs:
             - name: checkout
               uses: actions/checkout@v4
 
-            - name: configure nginx
-              run: |
-                  sed -e "s/{PORT}/${{ secrets.PORT }}/g" yelpcamp.conf > yelpcamp.conf.tmp
-                  mv yelpcamp.conf.tmp yelpcamp.conf
-                  cp yelpcamp.conf /usr/local/etc/nginx/servers/
-                  nginx -t
-
             - name: create .env
               run: |
                   echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
@@ -57,10 +50,18 @@ jobs:
                   docker push $IMAGE
                   echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
 
-            - name: start docker, restart nginx
+            - name: start docker
               run: |
                   REPO=${{ env.REPO }} \
-                  IMAGE=${{ env.IMAGE }} \
-                  PORT=${{ secrets.PORT }} \
-                  docker compose up -d
-                  brew services restart nginx
+                    IMAGE=${{ env.IMAGE }} \
+                    PORT=${{ secrets.PORT }} \
+                    docker compose up -d
+
+            - name: configure, test, reload nginx
+              run: |
+                  sed -e "s/{PORT}/${{ secrets.PORT }}/g" \
+                    yelpcamp.conf > yelpcamp.conf.tmp
+                  mv yelpcamp.conf.tmp yelpcamp.conf
+                  cp yelpcamp.conf /usr/local/etc/nginx/servers/
+                  nginx -t
+                  nginx -s reload
