@@ -25,7 +25,7 @@
         "ejs-mate": "^4.0.0",
         "express": "^5.1.0",
         "express-mongo-sanitize": "^2.2.0",
-        "express-session": "^1.18.1",
+        "express-session": "^1.18.2",
         "helmet": "^8.1.0",
         "joi": "^17.13.3",
         "lorem-ipsum": "^2.0.8",
