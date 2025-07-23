@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "@dotenvx/dotenvx": "^1.48.2",
-        "axios": "^1.10.0",
+        "axios": "^1.11.0",
         "cloudinary": "^1.41.0",
         "connect-flash": "^0.1.1",
         "connect-mongo": "^5.1.0",
