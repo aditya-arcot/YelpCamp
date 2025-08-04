@@ -4,6 +4,9 @@ updates:
       directory: '/'
       schedule:
           interval: 'weekly'
+          day: 'monday'
+          time: '00:00'
+          timezone: 'America/Chicago'
       ignore:
           - dependency-name: 'cloudinary'
             update-types: ['version-update:semver-major']
@@ -18,6 +21,9 @@ updates:
       directory: '/'
       schedule:
           interval: 'weekly'
+          day: 'monday'
+          time: '00:00'
+          timezone: 'America/Chicago'
       groups:
           docker:
               patterns:
@@ -29,6 +35,9 @@ updates:
       directory: '/'
       schedule:
           interval: 'weekly'
+          day: 'monday'
+          time: '00:00'
+          timezone: 'America/Chicago'
       groups:
           github-actions:
               patterns:
