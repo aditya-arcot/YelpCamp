@@ -1,0 +1,33 @@
+name: Install Dependencies
+on:
+    pull_request_target:
+        branches:
+            - master
+
+permissions:
+    contents: read
+
+env:
+    NPM_CONFIG_USERCONFIG: /dev/null
+
+jobs:
+    install:
+        runs-on: self-hosted
+        steps:
+            - name: checkout
+              uses: actions/checkout@v5
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+
+            - name: setup node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 'lts/*'
+                  check-latest: true
+                  cache: 'npm'
+                  cache-dependency-path: package-lock.json
+
+            - name: install
+              run: |
+                  npm config ls
+                  npm ci
