@@ -3,7 +3,7 @@ updates:
     - package-ecosystem: 'npm'
       directory: '/'
       schedule:
-          interval: 'weekly'
+          interval: 'monthly'
           day: 'monday'
       ignore:
           - dependency-name: '*'
@@ -18,7 +18,7 @@ updates:
     - package-ecosystem: 'docker'
       directory: '/'
       schedule:
-          interval: 'weekly'
+          interval: 'monthly'
           day: 'monday'
       groups:
           docker:
@@ -30,7 +30,7 @@ updates:
     - package-ecosystem: 'github-actions'
       directory: '/'
       schedule:
-          interval: 'weekly'
+          interval: 'monthly'
           day: 'monday'
       groups:
           github-actions:
