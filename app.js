@@ -1,7 +1,7 @@
 const path = require('path')
 const { env } = require('process')
 const flash = require('connect-flash')
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo').default
 const ejsMate = require('ejs-mate')
 const express = require('express')
 const session = require('express-session')
@@ -32,7 +32,7 @@ const connectToMongo = async (url) => {
 const app = express()
 const weekTime = 1000 * 60 * 60 * 24 * 7
 const secret = env.SESSIONS_SECRET
-const store = MongoStore.create({
+const store = new MongoStore({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: { secret },
