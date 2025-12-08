@@ -7,6 +7,8 @@
         "lint": "eslint --fix --max-warnings=0 .",
         "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky && sort-package-json; fi",
         "prettier": "prettier --write .",
+        "seed": "dotenvx run -f .env.dev -- node seeds/index.js",
+        "seed:prod": "dotenvx run -f .env.prod -- node seeds/index.js",
         "start": "dotenvx run -f .env.dev -- nodemon -e js,ejs,json app.js",
         "start:deploy": "dotenvx run -- node app.js"
     },
