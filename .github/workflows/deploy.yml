@@ -54,14 +54,4 @@ jobs:
               run: |
                   REPO=${{ env.REPO }} \
                     IMAGE=${{ env.IMAGE }} \
-                    PORT=${{ secrets.PORT }} \
                     docker compose up -d
-
-            - name: configure, test, reload nginx
-              run: |
-                  sed -e "s/{PORT}/${{ secrets.PORT }}/g" \
-                    yelpcamp.conf > yelpcamp.conf.tmp
-                  mv yelpcamp.conf.tmp yelpcamp.conf
-                  cp yelpcamp.conf /usr/local/etc/nginx/servers/
-                  nginx -t
-                  nginx -s reload

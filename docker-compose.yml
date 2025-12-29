@@ -2,7 +2,17 @@ name: ${REPO}
 services:
     app:
         image: ${IMAGE}
-        ports:
-            - ${PORT}:3000
+        container_name: yelpcamp
         restart: always
-        container_name: app
+        networks:
+            - traefik-public
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.yelpcamp.rule=Host(`yelpcamp.aarcot.com`)
+            - traefik.http.routers.yelpcamp.entrypoints=websecure
+            - traefik.http.routers.yelpcamp.tls=true
+            - traefik.http.routers.yelpcamp.tls.certresolver=le
+
+networks:
+    traefik-public:
+        external: true
