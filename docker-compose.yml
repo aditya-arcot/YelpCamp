@@ -1,4 +1,5 @@
-name: ${REPO}
+name: yelpcamp
+
 services:
     app:
         image: ${IMAGE}

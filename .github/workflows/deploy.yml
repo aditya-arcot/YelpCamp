@@ -12,7 +12,6 @@ permissions:
     contents: read
 
 env:
-    REPO: $(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')
     IMAGE_TAG: $(date +%Y-%m-%d).${{ github.run_number }}-${{ github.run_attempt }}-${{ github.run_id }}
 
 jobs:
@@ -45,13 +44,12 @@ jobs:
             - name: build, push docker image
               run: |
                   cd stage/
-                  IMAGE=${{ secrets.DOCKER_REGISTRY }}/${{ env.REPO }}:${{ env.IMAGE_TAG }}
+                  IMAGE=${{ secrets.DOCKER_REGISTRY }}/yelpcamp:${{ env.IMAGE_TAG }}
                   docker build -t $IMAGE .
                   docker push $IMAGE
                   echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
 
             - name: start docker
               run: |
-                  REPO=${{ env.REPO }} \
-                    IMAGE=${{ env.IMAGE }} \
+                  IMAGE=${{ env.IMAGE }} \
                     docker compose up -d
