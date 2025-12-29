@@ -9,12 +9,8 @@ services:
             - traefik-public
         labels:
             - traefik.enable=true
-
             - traefik.http.routers.yelpcamp.rule=Host(`yelpcamp.aarcot.com`)
             - traefik.http.routers.yelpcamp.entrypoints=websecure
-            - traefik.http.routers.yelpcamp.tls=true
-            - traefik.http.routers.yelpcamp.tls.certresolver=le
-
             # explicit port mapping required
             - traefik.http.services.yelpcamp.loadbalancer.server.port=3000
 
