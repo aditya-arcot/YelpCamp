@@ -2,7 +2,7 @@ name: yelpcamp
 
 services:
     app:
-        image: ${IMAGE}
+        image: ${IMAGE?}
         container_name: yelpcamp
         restart: always
         networks:
